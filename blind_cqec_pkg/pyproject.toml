@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blind-cqec"
+version = "0.2.0"
+description = "Blind Catalytic Quantum Error Correction: target-state estimation and fidelity recovery without a priori knowledge"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Hikaru Wakaura", email = "h.wakaura@deeptell.jp" },
+    { name = "Taiki Tanimae",  email = "t.tanimae@deeptell.jp" },
+]
+requires-python = ">=3.9"
+keywords = [
+    "quantum",
+    "quantum-error-correction",
+    "quantum-error-mitigation",
+    "catalytic",
+    "coherence",
+    "open-quantum-systems",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.22",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.6"]
+test = ["pytest>=7.0", "pytest-cov"]
+dev  = ["pytest>=7.0", "pytest-cov", "matplotlib>=3.6", "ruff", "build"]
+
+[project.urls]
+Homepage      = "https://github.com/deeptell-inc/blind_cqec_pkg"
+Documentation = "https://github.com/deeptell-inc/blind_cqec_pkg#readme"
+Issues        = "https://github.com/deeptell-inc/blind_cqec_pkg/issues"
+Repository    = "https://github.com/deeptell-inc/blind_cqec_pkg"
+Paper         = "https://arxiv.org/abs/2604.11857"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["blind_cqec*"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = "-ra -q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"

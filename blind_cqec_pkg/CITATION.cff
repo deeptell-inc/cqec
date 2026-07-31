@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the companion paper."
+title: "blind-cqec: Reference implementation of Blind Catalytic Quantum Error Correction"
+version: "0.2.0"
+date-released: "2026-07-31"
+license: MIT
+repository-code: "https://github.com/deeptell-inc/blind_cqec_pkg"
+url: "https://github.com/deeptell-inc/blind_cqec_pkg"
+authors:
+  - family-names: Wakaura
+    given-names: Hikaru
+    email: h.wakaura@deeptell.jp
+    affiliation: "QIRI (Quantum Integrated Research Institute Inc.)"
+  - family-names: Tanimae
+    given-names: Taiki
+    email: t.tanimae@deeptell.jp
+    affiliation: "QIRI (Quantum Integrated Research Institute Inc.)"
+preferred-citation:
+  type: article
+  title: "Blind Catalytic Quantum Error Correction: Target-State Estimation and Fidelity Recovery Without A Priori Knowledge"
+  authors:
+    - family-names: Wakaura
+      given-names: Hikaru
+    - family-names: Tanimae
+      given-names: Taiki
+  year: 2026
+  doi: "10.48550/arXiv.2604.11857"
+  url: "https://arxiv.org/abs/2604.11857"
+  identifiers:
+    - type: doi
+      value: "10.48550/arXiv.2604.11857"
+    - type: other
+      value: "arXiv:2604.11857"
+keywords:
+  - quantum error correction
+  - quantum error mitigation
+  - catalytic transformations
+  - quantum coherence
+  - open quantum systems

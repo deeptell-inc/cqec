@@ -57,4 +57,4 @@ from cqec.joint import JointCQEC
 
 __version__ = "0.2.0"
 __author__ = "Hikaru Wakaura"
-__email__ = "h.wakaura@deeptell.jp"
+__email__ = "h.wakaura@qiri.co.jp"

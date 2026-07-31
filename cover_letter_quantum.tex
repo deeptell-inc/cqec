@@ -1,0 +1,114 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\textbf{Cover letter to the Editors of \emph{Quantum}}
+
+\vspace{0.4cm}
+
+Hikaru Wakaura, Taiki Tanimae \\
+QIRI (Quantum Integrated Research Institute Inc.)\\
+1--16--3, Akasaka, Minato-ku, Tokyo 107--0061, Japan\\
+\href{mailto:h.wakaura@qiri.co.jp}{h.wakaura@qiri.co.jp} \quad ORCID: 0009-0001-2341-7710
+
+\vspace{0.3cm}
+April 23, 2026
+
+\vspace{0.4cm}
+
+Dear Editors,
+
+\medskip
+
+% --- (1) 投稿物の明記 ---
+On April 23, 2026, we submitted our manuscript ``\textbf{Blind Catalytic Quantum Error Correction: Target-State Estimation and Fidelity Recovery Without A Priori Knowledge}'', authored by Hikaru Wakaura and Taiki Tanimae, for consideration as an Article in \emph{Quantum}.
+The submission consists of the main manuscript ($\sim$25 pages, 18 figures, 9 tables, single bibliography) and an open-source Python package release (\texttt{blind\_cqec}, MIT license, available at \url{https://github.com/deeptell-inc/blind_cqec_pkg}) that ships a 61-test reproducibility suite locking in every numerical value reported in the paper.
+
+\medskip
+
+% --- (2) 原稿の魅力 — 第1段落: 何を発見したか ---
+\textbf{What we discovered.}
+Catalytic quantum error correction (CQEC) is a recent threshold-free recovery framework that has so far required a strong assumption: the ideal target state must be known exactly to construct the catalytic map.
+We discovered that this assumption can be removed almost entirely.
+By prepending a classical pre-estimator to the catalytic recovery, we obtain a two-stage protocol---blind CQEC---whose recovery fidelity satisfies a clean analytical bound, $F_\mathrm{rec} \geq 1 - 2\,\|\hat\rho_\mathrm{est} - \rho_\mathrm{target}\|_1$, with an empirical Lipschitz constant of $0.98 \pm 0.02$.
+The bound is matched by a near-perfect linear correlation between estimation and recovery fidelities ($r > 0.99$ across 84 conditions), implying that the entire performance of blind CQEC is governed by a \emph{single classical estimation problem}.
+A natural consequence is an analytical crossover dimension $d^* \approx 25$--$40$ separating a noise-model-free regime (coherence maximization) from a noise-informed regime (channel inversion), with a tunable hybrid that bridges the two.
+
+% --- 第2段落: なぜ重要か ---
+\textbf{Why this matters.}
+The result reframes blind error correction as a classical optimization problem, opening a tractable design space that prior coherence-resource-theoretic protocols left implicit.
+It also fills a gap in the existing error-handling stack: standard QEC requires pre-encoding and a noise threshold; quantum error mitigation (ZNE, PEC, virtual distillation) returns corrected expectation values rather than the state itself and pays exponential overhead in circuit depth or qubit count.
+Blind CQEC sits between these two---post-hoc, threshold-free, single-copy, and state-level---which is precisely the regime relevant to variational and iterative quantum algorithms whose output is unknown to the correction module.
+A noisy VQE simulation for H$_2$ already shows a $3.4\times$ energy-error reduction without any knowledge of the ansatz state, and a circuit-level sanity check on \texttt{qiskit-aer} confirms that the density-matrix predictions transfer to small noisy circuits.
+
+% --- 第3段落: なぜ Quantum か ---
+\textbf{Why \emph{Quantum}.}
+\emph{Quantum}'s combined emphasis on theoretical rigor, comprehensive numerical evidence, and open scientific practice fits this work directly.
+The manuscript provides a proven Lipschitz bound, a closed-form crossover dimension, and ensemble benchmarks on Haar-random states up to $d = 256$.
+The accompanying \texttt{blind\_cqec} package is released under the MIT license with full continuous-integration coverage, deterministic seeds, and a numerical regression test suite, supporting the reproducibility standards \emph{Quantum} explicitly champions.
+The companion preprints on which we build are all publicly available (arXiv:2603.25774, doi:10.21203/rs.3.rs-9366084, arXiv:2603.11568), so the manuscript is fully self-contained for review.
+We believe the breadth of evidence, the analytical content, and the open-science deliverables make this submission well-aligned with \emph{Quantum}'s scope and standards, and that it will be of broad interest to the quantum-error-correction, quantum-error-mitigation, and resource-theory communities.
+
+\medskip
+
+% --- (3) 推奨査読者リスト (10名, 日本人なし) ---
+\textbf{Suggested referees.}
+\begin{enumerate}
+\item \textbf{Ryuji Takagi}, Nanyang Technological University, Singapore (\texttt{ryuji.takagi@ntu.edu.sg}). Co-author of the foundational PRL on catalytic coherence transformations; primary expert on the resource-theoretic backbone.
+\item \textbf{Mark M.\ Wilde}, Cornell University, USA (\texttt{wilde@cornell.edu}). Quantum Shannon theory, channel fidelity bounds, asymmetry measures.
+\item \textbf{Andreas Winter}, Universitat Aut\`{o}noma de Barcelona, Spain (\texttt{andreas.winter@uab.cat}). Catalytic resource theories, asymptotic transformations.
+\item \textbf{Christophe Piveteau}, IBM Research Z\"{u}rich, Switzerland (\texttt{cpv@zurich.ibm.com}). Probabilistic error cancellation; well-placed to evaluate the QEM comparison.
+\item \textbf{B\'{a}lint Koczor}, University of Oxford, UK (\texttt{balint.koczor@maths.ox.ac.uk}). Virtual distillation, error mitigation, near-term VQE.
+\item \textbf{Daniel Stilck Fran\c{c}a}, ENS Lyon / CNRS, France (\texttt{daniel.stilck-franca@ens-lyon.fr}). Quantum state estimation, noise-aware tomography, copy complexity.
+\item \textbf{Tim Byrnes}, NYU Shanghai, China (\texttt{tim.byrnes@nyu.edu}). Co-author of the Purification QEC framework cited in our comparison.
+\item \textbf{Mart\'{\i} Perarnau-Llobet}, University of Geneva, Switzerland (\texttt{marti.perarnaullobet@unige.ch}). Catalysis and asymmetry resource theory; quantum thermodynamics.
+\item \textbf{Iman Marvian}, Duke University, USA (\texttt{iman.marvian@duke.edu}). Symmetry/asymmetry resource theory, covariant operations.
+\item \textbf{Patrick Hayden}, Stanford University, USA (\texttt{phayden@stanford.edu}). Quantum information theory, fidelity-based recovery and decoupling.
+\end{enumerate}
+
+\medskip
+
+% --- (4) 非推奨査読者リスト (3人以下) ---
+\textbf{Non-preferred referees.}
+None.
+
+\medskip
+
+% --- (5) 著者情報 ---
+\textbf{Corresponding author.}
+Hikaru Wakaura, QIRI Inc., 1--16--3, Akasaka, Minato-ku, Tokyo 107--0061, Japan;
+\href{mailto:h.wakaura@qiri.co.jp}{h.wakaura@qiri.co.jp};
+ORCID 0009-0001-2341-7710.
+Co-author Taiki Tanimae (\href{mailto:t.tanimae@qiri.co.jp}{t.tanimae@qiri.co.jp}) is at the same affiliation.
+
+\medskip
+
+\textbf{Statements.}
+This work has not been published or submitted elsewhere.
+Both authors have read and approved the submission.
+We declare no competing interests.
+
+\medskip
+
+We thank you for your consideration and look forward to the referees' feedback.
+
+\vspace{0.6cm}
+
+Sincerely,
+
+\vspace{0.5cm}
+Hikaru Wakaura\\
+Taiki Tanimae\\
+QIRI Inc., Tokyo
+
+\end{document}
