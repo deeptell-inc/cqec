@@ -1,0 +1,112 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{xcolor}
+\sloppy
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\textbf{Cover letter to the Editors of \emph{Quantum}}
+
+\vspace{0.4cm}
+
+Hikaru Wakaura, Taiki Tanimae \\
+QIRI (Quantum Integrated Research Institute Inc.)\\
+1--16--3, Akasaka, Minato-ku, Tokyo 107--0061, Japan\\
+\href{mailto:h.wakaura@deeptell.jp}{h.wakaura@deeptell.jp} \quad ORCID: 0009-0001-2341-7710
+
+\vspace{0.3cm}
+April 28, 2026
+
+\vspace{0.4cm}
+
+Dear Editors,
+
+\medskip
+
+We are pleased to submit our manuscript, \textbf{``Catalytic Quantum Error Correction: Theory, Efficient Catalyst Preparation, and Numerical Benchmarks''}, for consideration by \emph{Quantum}.
+
+\medskip
+
+\textbf{Summary of the contribution.}
+We turn a recent foundational theorem in the resource theory of coherence (Shiraishi \& Takagi, \emph{Phys.\ Rev.\ Lett.}\ \textbf{132}, 180202, 2024) into a candidate quantum-error-correction primitive that we call \emph{Catalytic Quantum Error Correction} (CQEC): a protocol with explicit mode-inclusion success conditions that recovers a known target state from noisy copies without an error-\emph{magnitude} threshold.
+The constructive proof requires $n^{*} \sim d^{4} e^{2\gamma}$ noisy copies---about $7.3 \times 10^{10}$ for a 6-qubit catalyst at moderate dephasing; our three-stage pipeline (CPMG dynamical decoupling, Clifford twirling, recursive swap-test purification) reaches the same $F_\mathrm{cat} \geq 0.99$ endpoint from 32~copies, a $10^{4}$--$10^{9}$-fold reduction depending on dimension.
+Distinctively, the manuscript pairs its fast effective model with a \emph{genuinely CPTP, exactly covariant joint-channel implementation} (system--catalyst--ancilla, catalyst obtained by partial trace), validates real recovery under dephasing at small dimension ($0.54 \to 0.77$), and quantifies the model-vs-channel gap openly---including a target-swap control experiment and the finding that shallow circuits consume rather than preserve the catalyst.
+
+\medskip
+
+\textbf{Why \emph{Quantum}.}
+\emph{Quantum}'s emphasis on theoretical rigor, comprehensive numerical evidence, and open scientific practice matches every aspect of this manuscript:
+\begin{itemize}
+\item \emph{Theoretical framework.}
+We formulate the CQEC protocol with explicit success/failure conditions based on the mode inclusion criterion $\mathcal{C}(\rho_{0}) \subseteq \mathcal{C}(\rho_\mathrm{noisy})$, give finite-copy fidelity bounds derived from Ref.\ [Shiraishi \& Takagi], and clarify its relationship to stabilizer QEC, covariant codes (Eastin--Knill), and the concurrent Purification QEC of Raghoonanan \& Byrnes (arXiv:2603.11568).
+\item \emph{Comprehensive benchmarks.}
+Four quantum algorithms (qDRIFT, QKAN, control-free QPE, Regev factoring) at $d = 4$--$64$, three noise channels (dephasing, depolarizing, combined), 200~configurations, a tree-tensor-network cryptographic protocol, a 100-cycle catalyst-reuse durability test, gate-noise resilience, circuit-depth scaling, and entangled-state recovery (Bell, GHZ, W).
+\item \emph{Quantitative claims with explicit scope.}
+$F > 0.99$ across the 200-point effective-model sweep, with the model's assumptions and its gap to the CPTP channel stated and measured; mode-inclusion classification verified over 10~orders of magnitude in residual coherence; $F_\mathrm{cat} > 0.96$ from $n = 8$ copies (0.99 from $n = 32$) for $d = 4$--$64$ under the stated DD/twirl model.
+\item \emph{Open science.}
+The complete reference implementation is released as the \texttt{cqec} Python package v0.2.0 (MIT license) with a 52-test \texttt{pytest} suite---including tests that lock in the joint channel's linearity, complete positivity, exact covariance, and catalyst-by-partial-trace properties---and a one-command reproduction script: \href{https://github.com/deeptell-inc/cqec}{\texttt{github.com/deeptell-inc/cqec}}.
+\end{itemize}
+
+\medskip
+
+\textbf{Key results highlighted for editors.}
+\begin{enumerate}
+\item \emph{CPTP joint-channel validation.} A genuinely linear, completely positive, exactly covariant recovery channel ($\|[U,H]\| = 0$, linearity residual $< 2 \times 10^{-16}$, Choi-positive) improves fidelity under dephasing at $d = 4$ from $0.54$ to $0.77$; a target-swap control shows the recovery is a property of the channel, not of injected target information.
+\item \emph{Honest gap analysis.} The same channel does not yet improve fidelity under depolarizing noise or at $d = 8$, and its catalyst marginal degrades ($0.48$--$0.84$)---the manuscript reports this openly and identifies deeper joint circuits with catalyst-preservation constraints as the research frontier.
+\item \emph{Resource bottleneck reduced.} Catalyst preparation at the matched $F_\mathrm{cat} \geq 0.99$ endpoint drops from $7.3 \times 10^{5}$--$7.3 \times 10^{10}$ copies (distillation) to 32~copies, with postselection costs quantified ($P_\mathrm{succ} \approx 0.7$).
+\item \emph{Model-sensitivity disclosure.} The pipeline's dimension independence is shown to depend on the twirl model (uniform vs.\ mode-resolved), a sensitivity the paper derives explicitly rather than hiding.
+\item \emph{Entanglement restoration (effective model).} Bell-state concurrence $0.135 \to 0.682$ ($5.0\times$) under a global recovery map, with the target-dependence caveat stated.
+\end{enumerate}
+
+\medskip
+
+\textbf{Companion preprint and code (all publicly available).}
+The manuscript is archived at \href{https://doi.org/10.48550/arXiv.2603.25774}{arXiv:2603.25774}.
+A concurrent and complementary submission ``Blind Catalytic Quantum Error Correction'' (treated independently) removes the target-state-knowledge requirement of CQEC; it is also under consideration by \emph{Quantum} and shares no overlapping figures or theorems with the present manuscript.
+
+\medskip
+
+\textbf{Suggested referees.}
+We list institutional email addresses obtained from public faculty pages; please verify before contact.
+\begin{itemize}
+\item \textbf{Naoto Shiraishi} (Graduate School of Arts and Sciences, The University of Tokyo, 3--8--1 Komaba, Meguro-ku, Tokyo 153--8902, Japan; \href{mailto:shiraishi@phys.c.u-tokyo.ac.jp}{\texttt{shiraishi@phys.c.u-tokyo.ac.jp}}) --- co-author of the foundational PRL on catalytic coherence transformations (\emph{Phys.\ Rev.\ Lett.}\ \textbf{132}, 180202, 2024) that our CQEC protocol operationalizes.
+\item \textbf{Ryuji Takagi} (School of Physical and Mathematical Sciences, Nanyang Technological University, 21 Nanyang Link, Singapore 637371; \href{mailto:ryuji.takagi@ntu.edu.sg}{\texttt{ryuji.takagi@ntu.edu.sg}}) --- co-author of the same foundational PRL; ideal evaluator for the resource-theoretic content of Sec.~II.
+\item \textbf{Tim Byrnes} (NYU Shanghai, 567 West Yangsi Road, Shanghai 200124, China; \href{mailto:tim.byrnes@nyu.edu}{\texttt{tim.byrnes@nyu.edu}}) --- co-author of the concurrent Purification QEC framework (arXiv:2603.11568) directly compared in our Table~IX.
+\item \textbf{Iman Marvian} (Department of Electrical and Computer Engineering, Duke University, 100 Science Drive, Durham, NC 27708, USA; \href{mailto:iman.marvian@duke.edu}{\texttt{iman.marvian@duke.edu}}) --- expert in covariant operations, resource theory of asymmetry, and approximate covariant codes (cited in Sec.~II.A).
+\item \textbf{Andrew M.~Childs} (Department of Computer Science and Institute for Quantum Information and Computer Science, University of Maryland, College Park, MD 20742, USA; \href{mailto:amchilds@umd.edu}{\texttt{amchilds@umd.edu}}) --- co-author of the recursive swap-test purification protocol (cited as Ref.~\cite{Childs2025}) that the Stage~3 of our pipeline adapts.
+\item \textbf{Aram W.~Harrow} (Center for Theoretical Physics, MIT, 77 Massachusetts Ave, Cambridge, MA 02139, USA; \href{mailto:aram@mit.edu}{\texttt{aram@mit.edu}}) --- expert in entanglement distillation, state purification, and related copy-based protocols underlying the swap-test analysis.
+\end{itemize}
+
+\textbf{Suggested non-preferred referees.}
+None.
+
+\medskip
+
+\textbf{Statements.}
+This work has not been published or submitted elsewhere.
+All authors have read and approved the submission.
+We declare no competing interests.
+
+\medskip
+
+We thank you in advance for your consideration. We hope you find the manuscript suitable for \emph{Quantum} and look forward to the referees' feedback.
+
+\medskip
+
+Sincerely,
+
+\vspace{0.4cm}
+Hikaru Wakaura\\
+Taiki Tanimae\\
+QIRI Inc., Tokyo
+
+\end{document}
