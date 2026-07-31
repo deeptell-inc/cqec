@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cqec"
+version = "0.2.0"
+description = "Catalytic Quantum Error Correction: state recovery via catalytic covariant transformations"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Hikaru Wakaura", email = "h.wakaura@deeptell.jp"},
+]
+keywords = [
+    "quantum error correction",
+    "quantum coherence",
+    "resource theory",
+    "catalytic transformation",
+    "swap test",
+    "dynamical decoupling",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.7"]
+dev = [
+    "pytest>=7.0",
+    "matplotlib>=3.7",
+]
+
+[project.urls]
+Paper = "https://doi.org/10.48550/arXiv.2603.25774"
+Homepage = "https://github.com/deeptell-inc/cqec"
+Documentation = "https://github.com/deeptell-inc/cqec#readme"
+Repository = "https://github.com/deeptell-inc/cqec"
+Issues = "https://github.com/deeptell-inc/cqec/issues"
+
+[tool.setuptools.packages.find]
+include = ["cqec*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,75 @@
+{
+  "configs": [
+    {
+      "name": "QKAN",
+      "noise": "deph g=2",
+      "catalyst": "ideal",
+      "d": 4,
+      "F_noisy": 0.5416632813158153,
+      "F_rec": 0.7165455670068915,
+      "F_cat_marginal": 0.7644264428882167,
+      "covariance_residual": 0.0,
+      "linearity_residual": 1.6800651342458016e-16,
+      "choi_min_eig": 8.537707985030831e-09,
+      "opt_seconds": 7.151723146438599
+    },
+    {
+      "name": "QKAN",
+      "noise": "depol p=0.3",
+      "catalyst": "ideal",
+      "d": 4,
+      "F_noisy": 0.7750000000000006,
+      "F_rec": 0.7308351199303459,
+      "F_cat_marginal": 0.8435977223842354,
+      "covariance_residual": 0.0,
+      "linearity_residual": 5.61379204405892e-17,
+      "choi_min_eig": 1.0256424185534455e-05,
+      "opt_seconds": 6.908499002456665
+    },
+    {
+      "name": "QKAN",
+      "noise": "deph g=2",
+      "catalyst": "ddtwirl",
+      "d": 4,
+      "F_noisy": 0.5416632813158153,
+      "F_rec": 0.7742625775907912,
+      "F_cat_marginal": 0.7555351154587508,
+      "covariance_residual": 0.0,
+      "linearity_residual": 5.597567299893753e-17,
+      "choi_min_eig": 0.00026683068934793135,
+      "opt_seconds": 8.537895917892456
+    },
+    {
+      "name": "qDRIFT",
+      "noise": "deph g=2",
+      "catalyst": "ideal",
+      "d": 8,
+      "F_noisy": 0.8339134960692902,
+      "F_rec": 0.763873775490304,
+      "F_cat_marginal": 0.4798628909106509,
+      "covariance_residual": 0.0,
+      "linearity_residual": 1.387783062549634e-16,
+      "choi_min_eig": -5.71703038815132e-16,
+      "opt_seconds": 307.53300189971924
+    },
+    {
+      "name": "qDRIFT",
+      "noise": "depol p=0.3",
+      "catalyst": "ideal",
+      "d": 8,
+      "F_noisy": 0.7375000085636245,
+      "F_rec": 0.5991603671818898,
+      "F_cat_marginal": 0.5686520648341892,
+      "covariance_residual": 0.0,
+      "linearity_residual": 3.6082257013364127e-16,
+      "choi_min_eig": -5.086048221881742e-16,
+      "opt_seconds": 272.3840272426605
+    }
+  ],
+  "target_swap": {
+    "F_noisy_vs_A": 0.5416632813158153,
+    "channelA_F_vs_A": 0.7165455670068915,
+    "channelB_F_vs_A": 0.40327952968330966,
+    "channelB_F_vs_B": 0.7303999034049704
+  }
+}
