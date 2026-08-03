@@ -162,10 +162,12 @@ python -m pytest tests/ -v   # 52 tests, all passing
 
 | Method | Copies | F_cat (gamma=2) | Best for |
 |--------|--------|-----------------|----------|
-| Variational | 0 | 1.000 (d<=4) | NISQ, no copies available |
+| Variational | 0 | 1.000 (d<=4)* | NISQ, no copies available |
 | Standard swap test | 8-64 | 0.93 (depol) | Depolarizing noise |
 | DD+Twirl+Swap Test | 8 | 0.96 (all d) | Dephasing noise (recommended) |
 | Distillation | ~10^10 | 0.99 | Theoretical baseline |
+
+\* Up to a free incoherent (diagonal) phase gauge: `variational_catalyst()` returns a state with maximal coherence C_l1 = d-1 and 100% mode coverage whose raw fidelity to the reference max-coherent state is ~0.13 until the free phase alignment is applied; fidelity 1.000 is after alignment.
 
 ## Citation
 

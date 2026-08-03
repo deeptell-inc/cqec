@@ -15,7 +15,7 @@ Authors: Hikaru Wakaura, Taiki Tanimae (QIRI Inc., Tokyo)
 
 Verified before packaging:
 - Compiles standalone with `pdflatex` twice (no bibtex needed — `.bbl` included): 21 pages, zero errors, zero overfull boxes, zero undefined references.
-- Abstract length: 1,820 characters (< 1,920 limit).
+- Abstract length: 1,765 characters plain text (`abstract_plain.txt`; < 1,920 limit).
 - Package claims match `cqec` v0.2.0 (52 tests passing) at
   https://github.com/deeptell-inc/cqec
 
@@ -28,7 +28,7 @@ Verified before packaging:
 3. Update the abstract field with the manuscript's current abstract
    (copy from `paper_quantum.tex`, strip LaTeX cite commands).
 4. Comments field suggestion:
-   `21 pages, 13 figures. v2: adversarial-review revision; adds CPTP
+   `21 pages, 17 figures (16 files + 1 TikZ). v2: adversarial-review revision; adds CPTP
    joint-channel validation (Sec. VI), corrected finite-copy bounds,
    and explicit effective-model scope. Code: v0.2.0 at
    https://github.com/deeptell-inc/cqec`

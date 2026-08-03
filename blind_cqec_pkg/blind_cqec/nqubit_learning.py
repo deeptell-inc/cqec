@@ -257,13 +257,29 @@ def invert_pauli_channel(rho: Array, channel: PauliChannel, n: int,
 
 
 def psd_normalize(rho: Array) -> Array:
+    """Hilbert-Schmidt (Frobenius) metric projection onto the state set.
+
+    Projects the eigenvalues onto the probability simplex ((w - mu)_+ with
+    unit sum) rather than clip-and-renormalise. The metric projection onto a
+    convex set is non-expansive in the Frobenius norm, which the recovery
+    bound's proof requires; clip+renormalise is a different map that can
+    expand distances (observed up to 1.7x) and is NOT covered by the theorem.
+    """
     rho = (rho + rho.conj().T) / 2
     with np.errstate(divide="ignore", over="ignore", invalid="ignore"):
         w, v = np.linalg.eigh(rho)
-        w = np.clip(w.real, 0.0, None)
+        w = w.real
+        # Euclidean projection of eigenvalues onto the simplex {p >= 0, sum p = 1}
+        u = np.sort(w)[::-1]
+        css = np.cumsum(u) - 1.0
+        idx = np.arange(1, len(u) + 1)
+        rho_idx = np.nonzero(u - css / idx > 0)[0]
+        if len(rho_idx) == 0:
+            return np.eye(rho.shape[0], dtype=complex) / rho.shape[0]
+        mu = css[rho_idx[-1]] / (rho_idx[-1] + 1)
+        w = np.maximum(w - mu, 0.0)
         out = (v * w) @ v.conj().T
-    tr = np.trace(out).real
-    return out / tr if tr > 1e-15 else np.eye(rho.shape[0]) / rho.shape[0]
+    return out
 
 
 # --------------------------------------------------------------------------

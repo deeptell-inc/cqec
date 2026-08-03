@@ -362,7 +362,7 @@ The gate parameters $\boldsymbol{\theta} = (\theta_0, \ldots, \theta_4)$ are opt
 where $F(\rho, \sigma) = \bigl(\mathrm{Tr}\sqrt{\sqrt{\rho}\,\sigma\,\sqrt{\rho}}\bigr)^2$ is the Uhlmann fidelity~\cite{Jozsa1994}, $\rho_S^\mathrm{out} = \mathrm{Tr}_{CA}[U_\mathrm{CQEC}(\rho_\mathrm{in})U_\mathrm{CQEC}^\dagger]$ is the recovered system state, and $\rho_C^\mathrm{out} = \mathrm{Tr}_{SA}[\cdot]$ is the catalyst after the operation.
 The weighting $\alpha = 0.7$ reflects the asymmetry of the catalytic constraint: the catalyst must be \emph{exactly} preserved (a hard constraint), while recovery fidelity should be \emph{maximized} (the objective).
 The $\alpha = 0.7$ value places sufficient weight on system recovery while keeping the catalyst penalty high enough to prevent drift.
-Scanning $\alpha \in [0.5, 0.9]$ confirms $\alpha \in [0.6, 0.8]$ maintains both $F_\mathrm{after} > 0.999$ and $F_C > 0.998$ across all tested combinations; outside this range, either the recovered state degrades ($\alpha < 0.6$) or the catalyst drifts ($\alpha > 0.8$).
+Scanning $\alpha \in [0.5, 0.9]$ in the effective model indicated that $\alpha \in [0.6, 0.8]$ maintains both $F_\mathrm{after} > 0.999$ and $F_C > 0.998$ across the tested combinations (exploratory runs, not archived in the released results files); outside this range, either the recovered state degrades ($\alpha < 0.6$) or the catalyst drifts ($\alpha > 0.8$).
 
 Optimization uses a two-stage gradient-free approach: (i)~Latin hypercube sampling of 100~initial parameter vectors $\boldsymbol{\theta} \in [0, 2\pi)^5$, followed by (ii)~Nelder--Mead simplex refinement~\cite{NelderMead1965} of the best 5~candidates.
 The parameters are optimized \emph{for each specific input state}: CQEC in its current variational form is a state-specific decoder.
@@ -851,7 +851,7 @@ The pattern is consistent across all four algorithms (Fig.~\ref{fig:qec_comparis
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=\columnwidth]{fig4_qec_comparison}
-\caption{\textbf{CQEC maintains unit fidelity at noise levels where Steane and surface codes degrade monotonically.}
+\caption{\textbf{In the effective model (asymptotic $n \to \infty$), CQEC maintains unit fidelity at noise levels where Steane and surface codes degrade monotonically.}
 Panels (a)--(d): qDRIFT, QKAN, CF-QPE, and Regev under depolarizing noise.
 At $p = 0.3$, surface code $d=5$ falls to $F \approx 0.64$ while CQEC remains at $F = 1.0$.}
 \label{fig:qec_comparison}
@@ -864,7 +864,7 @@ At $p = 0.3$, surface code $d=5$ falls to $F \approx 0.64$ while CQEC remains at
 Figure~\ref{fig:ttn} presents a heatmap across 42~data points (6 plaintext lengths $\times$ 7 noise levels).
 We observe three regimes:
 (i)~Weak noise ($\gamma \leq 0.5$, $p \leq 0.05$): pre-correction $F > 0.9$, CQEC provides marginal benefit.
-(ii)~Moderate noise ($\gamma \sim 1.5$, $p \sim 0.15$): pre-correction $F \approx 0.5$--$0.7$, CQEC restores to $F = 1.000$.
+(ii)~Moderate noise ($\gamma \sim 1.5$, $p \sim 0.15$): pre-correction $F \approx 0.5$--$0.7$, CQEC restores to $F = 1.000$ in the asymptotic effective model.
 (iii)~Extreme noise ($\gamma = 3.0$, $p = 0.3$): pre-correction $F = 0.20$--$0.28$, approaching $1/d = 0.125$; CQEC still achieves $F = 1.000$ in the asymptotic limit.
 The recovery is uniform across all plaintext lengths, confirming that the mode structure of TTN output states is robust: all 6 plaintext lengths produce states with identical mode support $|\mathcal{D}| = 56$.
 CQEC can restore intermediate quantum states in prepare-and-measure cryptographic schemes where the sender knows the target state, complementing the classical noise absorption mechanism in TTN protocols~\cite{Sim2019}.
@@ -970,7 +970,7 @@ Key observations:
 \begin{enumerate}
 \item Under strong dephasing, standard and covariant swap tests alone fail ($F_\mathrm{cat} < 0.44$). At $d = 64$, the covariant method reaches only $F_\mathrm{cat} = 0.022$---barely above $1/d$.
 \item The covariant method provides a modest $1.2$--$1.4\times$ improvement over standard.
-\item \textbf{The DD+Twirl pipeline solves the dephasing problem}: $F_\mathrm{cat} > 0.96$ uniformly across $d = 4$--$64$ with only 8~copies---a $10^9$-fold improvement over distillation.
+\item \textbf{The DD+Twirl pipeline solves the dephasing problem}: $F_\mathrm{cat} > 0.96$ uniformly across $d = 4$--$64$ with only 8~copies; at the matched $F_\mathrm{cat} \geq 0.99$ endpoint ($n = 32$), the copy-count reduction over distillation is $10^{4}$--$10^{9}$-fold depending on dimension (Sec.~\ref{sec:pipeline}).
 \item Under depolarizing noise, both standard and covariant methods achieve $F_\mathrm{cat} > 0.93$ with 8--64 copies.
 \item At $d = 4$, the variational approach ($F_\mathrm{cat} = 1.000$) remains competitive.
 \end{enumerate}
@@ -1137,7 +1137,7 @@ U^\dagger(\boldsymbol{\theta})\right],
 \end{equation}
 with $U(\boldsymbol{\theta})$ the 3-layer EC-gate circuit of Sec.~\ref{sec:three_layer} acting on the full $n_S + n_C + n_A$ register ($n_C = n_S$, $n_A = 2$; 12~gates at $d = 4$, 21 at $d = 8$).
 For fixed $c$ and $\boldsymbol{\theta}$ this map is linear and CPTP by construction; the target enters only the offline optimization of $\boldsymbol{\theta}$.
-We verify all previously assumed properties directly: covariance $\|[U, H_\mathrm{total}]\| = 0$ exactly, linearity residual $< 2 \times 10^{-16}$, Choi-matrix positivity, and the catalyst marginal obtained by partial trace of the propagated joint state (never copied).
+We verify all previously assumed properties directly: covariance $\|[U, H_\mathrm{total}]\| = 0$ exactly, linearity residual $< 4 \times 10^{-16}$ across all configurations (machine precision), Choi-matrix positivity to numerical tolerance ($\lambda_\mathrm{min} \geq -6 \times 10^{-16}$), and the catalyst marginal obtained by partial trace of the propagated joint state (never copied).
 
 \begin{table}[!tbp]
 \caption{CPTP joint-channel results. $F_\mathrm{cat}^\mathrm{marg}$ is the fidelity of the post-channel catalyst marginal (by partial trace) with the input catalyst. Dephasing is the per-qubit $Z$-channel convention.}
@@ -1400,7 +1400,7 @@ This is a topological constraint on the mode lattice structure, fundamentally di
 We have formulated, from the asymptotic catalytic-coherence theorem of Shiraishi and Takagi~\cite{Shiraishi2024}, a candidate quantum error-correction primitive without an error-magnitude threshold---Catalytic Quantum Error Correction (CQEC)---comprising an explicit protocol with mode-inclusion success conditions, a four-qubit EC-gate circuit architecture, and a three-stage DD+Twirl+Swap-Test catalyst-preparation pipeline, evaluated end-to-end in an effective numerical model.
 
 Within that model, recovery fidelity exceeds $0.99$ across a 200-point noise sweep spanning four benchmark states ($d = 4$--$64$) and two noise channels, the mode-inclusion classification behaves as Theorem~1 predicts over 10~orders of magnitude in residual coherence, and end-to-end finite-copy recovery reaches $F_\mathrm{rec} = 0.65$--$0.93$ from eight noisy copies.
-The comparison with prior approaches is therefore conditional but structurally distinct: stabilizer codes degrade above $p_\mathrm{th} \approx 1\%$, and the concurrent state-agnostic protocol PQEC~\cite{Raghoonanan2026} is bounded by $p_\mathrm{th}^\mathrm{depol} = 3/4$ and $p_\mathrm{th}^\mathrm{deph} = 1/2$, whereas CQEC's success condition depends on the \emph{support} of coherence rather than its magnitude---at the cost of requiring the target state and multiple copies, and pending validation by a fully CPTP joint-channel simulation (Sec.~\ref{sec:optimization}).
+The comparison with prior approaches is therefore conditional but structurally distinct: stabilizer codes degrade above $p_\mathrm{th} \approx 1\%$, and the concurrent state-agnostic protocol PQEC~\cite{Raghoonanan2026} is bounded by $p_\mathrm{th}^\mathrm{depol} = 3/4$ and $p_\mathrm{th}^\mathrm{deph} = 1/2$, whereas CQEC's success condition depends on the \emph{support} of coherence rather than its magnitude---at the cost of requiring the target state and multiple copies; a first CPTP joint-channel validation (Sec.~\ref{sec:joint_validation}) supports this at $d = 4$ under dephasing, with the remaining regimes still model-level.
 The pipeline reduces catalyst-preparation copy counts by four to nine orders of magnitude at the matched $F_\mathrm{cat} \geq 0.99$ endpoint ($n = 32$ vs.\ $7.3 \times 10^{5}$--$7.3 \times 10^{10}$ depending on dimension), under the stated DD and twirl model assumptions; gate-noise analysis indicates the $d \leq 16$ regime is the near-term-relevant one, while at $d = 64$ the cumulative purification-circuit error ($\sim\!0.38$ per round at $\epsilon_g \sim 10^{-3}$) remains prohibitive.
 
 These results reposition catalytic coherence amplification within the broader landscape of quantum information protection: CQEC, stabilizer QEC, and purification-based QEC form a complementary triad, in which threshold-bounded codes protect logical qubits, state-agnostic purification interleaves within an algorithm, and catalytic recovery targets the known outputs of state-specific subroutines such as variational ansatz states.
@@ -1425,7 +1425,7 @@ The companion Python package \texttt{cqec} (v0.2.0, MIT license) implements all 
 
 The reproduction script covers Fig.~\ref{fig:threshold} (mode-inclusion scan), Table~\ref{tab:standard_depol} (recursive swap test), Table~\ref{tab:dd_pipeline} (DD+Twirl pipeline, catalyst columns), Table~\ref{tab:finite_n_actual} (finite-$n$ recovery), and Table~\ref{tab:entangled} (entangled-state recovery); these results are deterministically reproducible with fixed random seeds.
 Table~\ref{tab:main} and the asymptotic sweep values were generated by the legacy effective-map implementation (\texttt{icec.py}, included in the repository but not part of the packaged \texttt{cqec} module) and are \emph{not} covered by the reproduction script; the packaged variational path yields lower values (Secs.~\ref{sec:finite_n_actual}--\ref{sec:gate_depth}), and the discrepancy is discussed in Sec.~\ref{sec:optimization}.
-The unit test suite (\texttt{pytest tests/}, 44~tests) validates each packaged module against the corresponding quantitative claims.
+The unit test suite (\texttt{pytest tests/}, 52~tests) validates each packaged module against the corresponding quantitative claims.
 
 
 \section*{Computational environment}
