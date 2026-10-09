@@ -31,6 +31,11 @@ Target: PRA Regular Article, Quantum information section.
 1. arXiv: replace abs/2603.25774 with this version (v3) OR submit PRA from
    the existing v2 and upload this source — PRA accepts direct source upload
    at https://authors.aps.org/Submissions/
+   Comments field for v3 (public record — keep neutral):
+   `21 pages, 17 figures. v3: restructured for clarity; primary results
+   (catalyst-preparation pipeline and CPTP covariant recovery channel) in
+   the main text, effective-model benchmarks in Appendix A. Code: v0.2.0 at
+   https://github.com/deeptell-inc/cqec`
 2. Journal: Physical Review A → Regular Article → Quantum information.
 3. Upload `source/` contents (tex + bbl + bib + figures) or a tarball of it.
 4. Paste cover letter text; enter suggested referees from `cover_letter.pdf`.

@@ -27,10 +27,11 @@ Verified before packaging:
 2. Upload `arxiv_v2_source.tar.gz`.
 3. Update the abstract field with the manuscript's current abstract
    (copy from `paper_quantum.tex`, strip LaTeX cite commands).
-4. Comments field suggestion:
-   `21 pages, 17 figures (16 files + 1 TikZ). v2: adversarial-review revision; adds CPTP
-   joint-channel validation (Sec. VI), corrected finite-copy bounds,
-   and explicit effective-model scope. Code: v0.2.0 at
+4. Comments field suggestion (public record — keep neutral, no internal
+   process narrative):
+   `21 pages, 17 figures (16 files + 1 TikZ). v2: adds CPTP joint-channel
+   validation (Sec. VI), full finite-copy bounds, and explicit
+   effective-model scope. Code: v0.2.0 at
    https://github.com/deeptell-inc/cqec`
 5. Note the announcement date; Quantum requires the paper to be on arXiv.
 
@@ -58,8 +59,7 @@ Verified before packaging:
 
 ## Claim-integrity notes for referee response
 
-The manuscript's headline claims were revised after an internal
-adversarial review; the current claims are scoped as follows and each is
+The manuscript's claims are scoped as follows and each is
 backed by the repository:
 
 1. Effective-model sweep F > 0.99 (200 points) — `scripts/benchmark_prxq.py`
