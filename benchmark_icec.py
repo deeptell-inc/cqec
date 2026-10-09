@@ -38,11 +38,10 @@ import time
 import sys
 import os
 
-# Add path to regev_factoring
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/QuantumSouken/baseline')
-
-# Import ICEC core
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/personal/cqec')
+# Import ICEC core (regev_factoring.py, used only by the optional Qulacs
+# demo, is looked up on the same path if present)
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
 from core import (
     partial_trace, tensor, trace_distance,
     coherence_l1, maximally_coherent_state,

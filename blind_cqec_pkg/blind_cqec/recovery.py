@@ -33,9 +33,11 @@ def icec_recover(
     modes that are still present in the noisy state: the recovered state
     must satisfy the mode-inclusion constraint
     C(rho_est) subset of C(rho_noisy). Coherences (i, j) whose magnitude in
-    the noisy state is below `mode_tol` correspond to modes that decoherence
-    has annihilated; they cannot be regenerated and are therefore zeroed in
-    the recovered state, no matter what the target estimate claims.
+    the noisy state is below `mode_tol` are treated as annihilated modes and
+    zeroed in the recovered state, no matter what the target estimate claims.
+    This is the numerical convention of the companion paper (a threshold
+    choice, not a consequence of the catalytic theorem, which places no lower
+    bound on a recoverable nonzero coherence); `mode_tol=0` disables it.
 
     This makes recovery genuinely depend on `noisy`: under deep dephasing,
     modes that have vanished are unrecoverable, so F_rec <= F_est in general.

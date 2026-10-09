@@ -1,0 +1,949 @@
+{
+ "tab_main_results__fig_blind_alg_heatmap__fig_blind_alg_scatter": {
+  "qDRIFT (Heisenberg)": {
+   "Dephasing (\u03b3=2.0)": {
+    "No correction": {
+     "estimation_fidelity": 0.15847268869747463,
+     "recovery_fidelity": 0.15847268869747463,
+     "trace_distance": 0.8415949485265061,
+     "coherence_ratio": 0.03825449096879817,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.15847268869747463,
+     "recovery_fidelity": 0.1584726899180038,
+     "trace_distance": 0.8415949485265062,
+     "coherence_ratio": 0.038254490968798134,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 5.73556043428164e-16,
+     "coherence_ratio": 0.9999999999999999,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 8.432666740866829e-16,
+     "coherence_ratio": 0.9999999999999997,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.8618136912539489,
+     "recovery_fidelity": 0.8618136817329646,
+     "trace_distance": 0.1389290160244289,
+     "coherence_ratio": 0.8420727364443885,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.22245511160605658,
+     "recovery_fidelity": 0.22243674545690212,
+     "trace_distance": 0.7994114265564124,
+     "coherence_ratio": 0.39417052811549225,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 3.9294930373994196e-16,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   },
+   "Depolarizing (p=0.3)": {
+    "No correction": {
+     "estimation_fidelity": 0.7375000396773909,
+     "recovery_fidelity": 0.7375000396773909,
+     "trace_distance": 0.26249999999999996,
+     "coherence_ratio": 0.7000000000000002,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.7375000396773909,
+     "recovery_fidelity": 0.7375000312687404,
+     "trace_distance": 0.26249999999999984,
+     "coherence_ratio": 0.7000000000000003,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 3.2775141526724975e-16,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 5.792525350959199e-16,
+     "coherence_ratio": 0.9999999999999999,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 6.7813192505928256e-12,
+     "coherence_ratio": 0.999999999992249,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.980539639921063,
+     "recovery_fidelity": 0.9805319426419769,
+     "trace_distance": 0.022723686857344983,
+     "coherence_ratio": 0.9778189609420368,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 3.9294930373994196e-16,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   },
+   "Combined (\u03b3=1,p=0.15,\u03b3_AD=0.1)": {
+    "No correction": {
+     "estimation_fidelity": 0.1949830639036383,
+     "recovery_fidelity": 0.1949830639036383,
+     "trace_distance": 0.8061700771270086,
+     "coherence_ratio": 0.07998063530377802,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.1949830639036383,
+     "recovery_fidelity": 0.19498306807173255,
+     "trace_distance": 0.8061700771270085,
+     "coherence_ratio": 0.07998063530377812,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 3.196920587813171e-16,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 0.9862528582559621,
+     "recovery_fidelity": 0.9862559666009603,
+     "trace_distance": 0.11745719781623036,
+     "coherence_ratio": 0.9842329219213237,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.8841224326758186,
+     "recovery_fidelity": 0.8841224323887183,
+     "trace_distance": 0.16096165254582204,
+     "coherence_ratio": 0.8675684441416739,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.5354924488858993,
+     "recovery_fidelity": 0.5354790205412893,
+     "trace_distance": 0.48976429971812374,
+     "coherence_ratio": 0.5438473476374822,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 3.9294930373994196e-16,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   }
+  },
+  "QKAN (CHEB-d3, sin)": {
+   "Dephasing (\u03b3=2.0)": {
+    "No correction": {
+     "estimation_fidelity": 0.30563949620834097,
+     "recovery_fidelity": 0.30563949620834097,
+     "trace_distance": 0.6946591643772899,
+     "coherence_ratio": 0.07418597994399546,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.30563949620834097,
+     "recovery_fidelity": 0.30563948889822545,
+     "trace_distance": 0.6946591643772901,
+     "coherence_ratio": 0.07418597994399512,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 5.595424745326137e-16,
+     "coherence_ratio": 0.9999999999999997,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 0.0,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.9174085126768985,
+     "recovery_fidelity": 0.9174085103016735,
+     "trace_distance": 0.08749627651133254,
+     "coherence_ratio": 0.8898779876882523,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.8232860072305223,
+     "recovery_fidelity": 0.8232923515617827,
+     "trace_distance": 0.25855366405804564,
+     "coherence_ratio": 0.8213783474023314,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 0.0,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   },
+   "Depolarizing (p=0.3)": {
+    "No correction": {
+     "estimation_fidelity": 0.7750000265145159,
+     "recovery_fidelity": 0.7750000265145159,
+     "trace_distance": 0.22500000000000006,
+     "coherence_ratio": 0.7000000000000001,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.7750000265145159,
+     "recovery_fidelity": 0.775000021650729,
+     "trace_distance": 0.2250000000000002,
+     "coherence_ratio": 0.6999999999999997,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 0.0,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 0.0,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 2.9062864054122513e-12,
+     "coherence_ratio": 0.9999999999961249,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.9977898856027425,
+     "recovery_fidelity": 0.9977933339902374,
+     "trace_distance": 0.007132172998401989,
+     "coherence_ratio": 0.9970621117087622,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 0.0,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   },
+   "Combined (\u03b3=1,p=0.15,\u03b3_AD=0.1)": {
+    "No correction": {
+     "estimation_fidelity": 0.37959581153261696,
+     "recovery_fidelity": 0.37959581153261696,
+     "trace_distance": 0.6223589839156095,
+     "coherence_ratio": 0.17279440467822674,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.37959581153261696,
+     "recovery_fidelity": 0.3795958126189167,
+     "trace_distance": 0.6223589839156094,
+     "coherence_ratio": 0.17279440467822696,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 4.521493989197491e-16,
+     "coherence_ratio": 0.9999999999999997,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 0.9931592619482771,
+     "recovery_fidelity": 0.9931731616406729,
+     "trace_distance": 0.0829185233244128,
+     "coherence_ratio": 0.9908326913195985,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.9586313129127031,
+     "recovery_fidelity": 0.9586313164870136,
+     "trace_distance": 0.08547497084523002,
+     "coherence_ratio": 0.9448417208737184,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.963823443907681,
+     "recovery_fidelity": 0.9638205628840996,
+     "trace_distance": 0.09373647033655866,
+     "coherence_ratio": 0.9522985770329981,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 0.0,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   }
+  },
+  "Control-Free QPE (VPR)": {
+   "Dephasing (\u03b3=2.0)": {
+    "No correction": {
+     "estimation_fidelity": 0.23060802467585553,
+     "recovery_fidelity": 0.23060802467585553,
+     "trace_distance": 0.7909285132799134,
+     "coherence_ratio": 0.022447819184775276,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.23060802467585553,
+     "recovery_fidelity": 0.23060802363727542,
+     "trace_distance": 0.7909285133171243,
+     "coherence_ratio": 0.022447819109208893,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 0.7091818100667362,
+     "trace_distance": 0.35990722917356605,
+     "coherence_ratio": 0.6443423648006553,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 0.7091909055703075,
+     "trace_distance": 0.3599072291735661,
+     "coherence_ratio": 0.6443423648006553,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.8683672631475977,
+     "recovery_fidelity": 0.6696435335055827,
+     "trace_distance": 0.3885852109428115,
+     "coherence_ratio": 0.5764859378664231,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.22137639148720759,
+     "recovery_fidelity": 0.2111723640293333,
+     "trace_distance": 0.811432450216532,
+     "coherence_ratio": 0.3191086043600496,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 0.7091641708948527,
+     "trace_distance": 0.359907229173566,
+     "coherence_ratio": 0.6443423648006553,
+     "mode_satisfied": true
+    }
+   },
+   "Depolarizing (p=0.3)": {
+    "No correction": {
+     "estimation_fidelity": 0.7187500487894285,
+     "recovery_fidelity": 0.7187500487894285,
+     "trace_distance": 0.28125,
+     "coherence_ratio": 0.7,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.7187500487894285,
+     "recovery_fidelity": 0.718750043239316,
+     "trace_distance": 0.28125,
+     "coherence_ratio": 0.6999999999999998,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 7.509229429032148e-16,
+     "coherence_ratio": 0.9999999999999994,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 0.9617779615616898,
+     "recovery_fidelity": 0.9618058397193477,
+     "trace_distance": 0.19579356614119112,
+     "coherence_ratio": 1.2706079269052424,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.9616744889479953,
+     "recovery_fidelity": 0.961673665168852,
+     "trace_distance": 0.19579356614643914,
+     "coherence_ratio": 1.2706079268855255,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.8759075832897542,
+     "recovery_fidelity": 0.8758599088254808,
+     "trace_distance": 0.26380395021685493,
+     "coherence_ratio": 1.2174094850710844,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 3.1546558823468044e-16,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   },
+   "Combined (\u03b3=1,p=0.15,\u03b3_AD=0.1)": {
+    "No correction": {
+     "estimation_fidelity": 0.2681982018509155,
+     "recovery_fidelity": 0.2681982018509155,
+     "trace_distance": 0.759271186084777,
+     "coherence_ratio": 0.04797333237785159,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.2681982018509155,
+     "recovery_fidelity": 0.26819819971406544,
+     "trace_distance": 0.759271186084777,
+     "coherence_ratio": 0.047973332377851584,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 6.282745393307618e-16,
+     "coherence_ratio": 0.9999999999999997,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 0.9916234235585104,
+     "recovery_fidelity": 0.9916201748934672,
+     "trace_distance": 0.09190747692203552,
+     "coherence_ratio": 1.0849797537663313,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.8891246416483305,
+     "recovery_fidelity": 0.8891246324008281,
+     "trace_distance": 0.13619071522201573,
+     "coherence_ratio": 0.910844444846044,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.33477972145298474,
+     "recovery_fidelity": 0.3347561120217896,
+     "trace_distance": 0.6960525929281391,
+     "coherence_ratio": 0.45250675980635635,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 3.1546558823468044e-16,
+     "coherence_ratio": 1.0,
+     "mode_satisfied": true
+    }
+   }
+  },
+  "Regev Factoring (N=15)": {
+   "Dephasing (\u03b3=2.0)": {
+    "No correction": {
+     "estimation_fidelity": 0.41081875383501076,
+     "recovery_fidelity": 0.41081875383501076,
+     "trace_distance": 0.6131835054395965,
+     "coherence_ratio": 7.024592851066416e-12,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.41081875383501076,
+     "recovery_fidelity": 0.4108187528073473,
+     "trace_distance": 0.6131835054396021,
+     "coherence_ratio": 0.0,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 0.41081874626037207,
+     "trace_distance": 0.6131835054396023,
+     "coherence_ratio": 0.0,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 0.832899658823893,
+     "recovery_fidelity": 0.3978842736067385,
+     "trace_distance": 0.6213146550375906,
+     "coherence_ratio": 0.0,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.832899658823893,
+     "recovery_fidelity": 0.3978842736067385,
+     "trace_distance": 0.6213146550375906,
+     "coherence_ratio": 0.0,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.040338582995353915,
+     "recovery_fidelity": 0.06951934982377014,
+     "trace_distance": 0.9307981960513412,
+     "coherence_ratio": 0.0,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 0.4108187528073473,
+     "trace_distance": 0.6131835054396021,
+     "coherence_ratio": 0.0,
+     "mode_satisfied": true
+    }
+   },
+   "Depolarizing (p=0.3)": {
+    "No correction": {
+     "estimation_fidelity": 0.7046876455968263,
+     "recovery_fidelity": 0.7046876455968263,
+     "trace_distance": 0.2953125,
+     "coherence_ratio": 0.6999999999999998,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.7046876455968263,
+     "recovery_fidelity": 0.7046876430264845,
+     "trace_distance": 0.29531249999999987,
+     "coherence_ratio": 0.699999999992535,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 1.974473792431089e-12,
+     "coherence_ratio": 0.9999999999944076,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 0.6126276142939238,
+     "recovery_fidelity": 0.5917802950837733,
+     "trace_distance": 0.45561014891172136,
+     "coherence_ratio": 1.6462155953014885,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.6127287586960858,
+     "recovery_fidelity": 0.5997104930461676,
+     "trace_distance": 0.4348461489971468,
+     "coherence_ratio": 1.4278779359909772,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.09210677701224447,
+     "recovery_fidelity": 0.09202752699974168,
+     "trace_distance": 0.9089487317467166,
+     "coherence_ratio": 0.2879038374947893,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 1.0,
+     "trace_distance": 1.9733954612651404e-12,
+     "coherence_ratio": 0.9999999999944106,
+     "mode_satisfied": true
+    }
+   },
+   "Combined (\u03b3=1,p=0.15,\u03b3_AD=0.1)": {
+    "No correction": {
+     "estimation_fidelity": 0.36875301718507725,
+     "recovery_fidelity": 0.36875301718507725,
+     "trace_distance": 0.6568301985507775,
+     "coherence_ratio": 1.87275809800082e-08,
+     "mode_satisfied": true
+    },
+    "Naive": {
+     "estimation_fidelity": 0.36875301718507725,
+     "recovery_fidelity": 0.3687530194140176,
+     "trace_distance": 0.6568301985597912,
+     "coherence_ratio": 1.8531563677761148e-08,
+     "mode_satisfied": true
+    },
+    "Channel inversion": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 0.7725119264402334,
+     "trace_distance": 0.29523838983827283,
+     "coherence_ratio": 0.4875248927855866,
+     "mode_satisfied": true
+    },
+    "Coherence max": {
+     "estimation_fidelity": 0.6678641638618475,
+     "recovery_fidelity": 0.6101257828091537,
+     "trace_distance": 0.42868825110220415,
+     "coherence_ratio": 0.40184737036739626,
+     "mode_satisfied": true
+    },
+    "Iterative": {
+     "estimation_fidelity": 0.6678641638618475,
+     "recovery_fidelity": 0.6101257828091537,
+     "trace_distance": 0.42868825110220415,
+     "coherence_ratio": 0.40184737036739626,
+     "mode_satisfied": true
+    },
+    "Multi-copy tomo": {
+     "estimation_fidelity": 0.04832022789501218,
+     "recovery_fidelity": 0.04308060296696254,
+     "trace_distance": 0.9573790284710542,
+     "coherence_ratio": 0.04115141912250587,
+     "mode_satisfied": true
+    },
+    "Oracle": {
+     "estimation_fidelity": 1.0,
+     "recovery_fidelity": 0.7725115753726223,
+     "trace_distance": 0.29523838983827255,
+     "coherence_ratio": 0.4875248927855866,
+     "mode_satisfied": true
+    }
+   }
+  }
+ },
+ "fig_blind_alg_copies": {
+  "copy_values": [
+   2,
+   5,
+   10,
+   20,
+   50,
+   100,
+   200
+  ],
+  "sweep_results": {
+   "qDRIFT (Heisenberg)": {
+    "Naive": [
+     0.19498306807173255,
+     0.19498306807173255,
+     0.19498306807173255,
+     0.19498306807173255,
+     0.19498306807173255,
+     0.19498306807173255,
+     0.19498306807173255
+    ],
+    "Channel inversion": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "Coherence max": [
+     0.9862559666009603,
+     0.9862559666009603,
+     0.9862559666009603,
+     0.9862559666009603,
+     0.9862559666009603,
+     0.9862559666009603,
+     0.9862559666009603
+    ],
+    "Iterative": [
+     0.2754549219701358,
+     0.37428911884571714,
+     0.4925523973801977,
+     0.6293639901492387,
+     0.7979360382846451,
+     0.8841224323887183,
+     0.9345921128289889
+    ],
+    "Multi-copy tomo": [
+     0.48464284544016717,
+     0.43298488279313774,
+     0.6450976072021632,
+     0.3971237806202615,
+     0.5822076146972686,
+     0.39460028939697,
+     0.43896545882325627
+    ],
+    "Oracle": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "No correction": [
+     0.1949830639036383,
+     0.1949830639036383,
+     0.1949830639036383,
+     0.1949830639036383,
+     0.1949830639036383,
+     0.1949830639036383,
+     0.1949830639036383
+    ]
+   },
+   "QKAN (CHEB-d3, sin)": {
+    "Naive": [
+     0.3795958126189167,
+     0.3795958126189167,
+     0.3795958126189167,
+     0.3795958126189167,
+     0.3795958126189167,
+     0.3795958126189167,
+     0.3795958126189167
+    ],
+    "Channel inversion": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "Coherence max": [
+     0.9931731616406729,
+     0.9931731616406729,
+     0.9931731616406729,
+     0.9931731616406729,
+     0.9931731616406729,
+     0.9931731616406729,
+     0.9931731616406729
+    ],
+    "Iterative": [
+     0.47109030717919365,
+     0.5994840736121287,
+     0.7166353019509186,
+     0.8141092746607337,
+     0.9158408849574298,
+     0.9586313164870136,
+     0.9781702030950836
+    ],
+    "Multi-copy tomo": [
+     0.9777815861311926,
+     0.9378172748074983,
+     0.9410525226849354,
+     0.9696070732799461,
+     0.9857473939824429,
+     0.9552951909630948,
+     0.9740905189378148
+    ],
+    "Oracle": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "No correction": [
+     0.37959581153261696,
+     0.37959581153261696,
+     0.37959581153261696,
+     0.37959581153261696,
+     0.37959581153261696,
+     0.37959581153261696,
+     0.37959581153261696
+    ]
+   },
+   "Control-Free QPE (VPR)": {
+    "Naive": [
+     0.26819819971406544,
+     0.26819819971406544,
+     0.26819819971406544,
+     0.26819819971406544,
+     0.26819819971406544,
+     0.26819819971406544,
+     0.26819819971406544
+    ],
+    "Channel inversion": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "Coherence max": [
+     0.9916201748934672,
+     0.9916201748934672,
+     0.9916201748934672,
+     0.9916201748934672,
+     0.9916201748934672,
+     0.9916201748934672,
+     0.9916201748934672
+    ],
+    "Iterative": [
+     0.3419887795948568,
+     0.43273890891325506,
+     0.5344469846505521,
+     0.6503247562609602,
+     0.8076187174554234,
+     0.8891246324008281,
+     0.9381808827944923
+    ],
+    "Multi-copy tomo": [
+     0.31590062659901047,
+     0.31801751060547684,
+     0.3244852902390787,
+     0.3761338852776756,
+     0.28483869553992297,
+     0.3339482449696224,
+     0.318017136042616
+    ],
+    "Oracle": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "No correction": [
+     0.2681982018509155,
+     0.2681982018509155,
+     0.2681982018509155,
+     0.2681982018509155,
+     0.2681982018509155,
+     0.2681982018509155,
+     0.2681982018509155
+    ]
+   },
+   "Regev Factoring (N=15)": {
+    "Naive": [
+     0.3687530194140176,
+     0.3687530194140176,
+     0.3687530194140176,
+     0.3687530194140176,
+     0.3687530194140176,
+     0.3687530194140176,
+     0.3687530194140176
+    ],
+    "Channel inversion": [
+     0.7725119264402334,
+     0.7725119264402334,
+     0.7725119264402334,
+     0.7725119264402334,
+     0.7725119264402334,
+     0.7725119264402334,
+     0.7725119264402334
+    ],
+    "Coherence max": [
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537
+    ],
+    "Iterative": [
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537,
+     0.6101257828091537
+    ],
+    "Multi-copy tomo": [
+     0.07564811334854332,
+     0.08274069575961226,
+     0.08166076051808947,
+     0.07131897744395983,
+     0.0795485964668376,
+     0.06361685127459053,
+     0.04529721040748088
+    ],
+    "Oracle": [
+     0.7725115753726223,
+     0.7725115753726223,
+     0.7725115753726223,
+     0.7725115753726223,
+     0.7725115753726223,
+     0.7725115753726223,
+     0.7725115753726223
+    ],
+    "No correction": [
+     0.36875301718507725,
+     0.36875301718507725,
+     0.36875301718507725,
+     0.36875301718507725,
+     0.36875301718507725,
+     0.36875301718507725,
+     0.36875301718507725
+    ]
+   }
+  }
+ },
+ "estimation_vs_recovery_correlation": {
+  "n_points": 84,
+  "pearson_r": 0.9199131926995037,
+  "slope": 0.9087057672116772,
+  "intercept": 0.023369043448482858,
+  "r2": 0.8462402821025939,
+  "max_abs_dev": 0.5891812537396279,
+  "per_dim_r": {
+   "4": 0.9999999999130701,
+   "8": 0.9999999999000027,
+   "16": 0.9414543385257682,
+   "64": 0.7742192162096349
+  }
+ },
+ "tab_min_copies": {
+  "Naive": {
+   "qDRIFT (Heisenberg)": "-",
+   "QKAN (CHEB-d3, sin)": "-",
+   "Control-Free QPE (VPR)": "-",
+   "Regev Factoring (N=15)": "-"
+  },
+  "Channel inversion": {
+   "qDRIFT (Heisenberg)": "2",
+   "QKAN (CHEB-d3, sin)": "2",
+   "Control-Free QPE (VPR)": "2",
+   "Regev Factoring (N=15)": "-"
+  },
+  "Coherence max": {
+   "qDRIFT (Heisenberg)": "2",
+   "QKAN (CHEB-d3, sin)": "2",
+   "Control-Free QPE (VPR)": "2",
+   "Regev Factoring (N=15)": "-"
+  },
+  "Iterative": {
+   "qDRIFT (Heisenberg)": "-",
+   "QKAN (CHEB-d3, sin)": "100",
+   "Control-Free QPE (VPR)": "-",
+   "Regev Factoring (N=15)": "-"
+  },
+  "Multi-copy tomo": {
+   "qDRIFT (Heisenberg)": "-",
+   "QKAN (CHEB-d3, sin)": "2",
+   "Control-Free QPE (VPR)": "-",
+   "Regev Factoring (N=15)": "-"
+  },
+  "Oracle": {
+   "qDRIFT (Heisenberg)": "2",
+   "QKAN (CHEB-d3, sin)": "2",
+   "Control-Free QPE (VPR)": "2",
+   "Regev Factoring (N=15)": "-"
+  }
+ }
+}

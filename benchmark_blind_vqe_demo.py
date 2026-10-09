@@ -19,9 +19,14 @@ Noise: Combined dephasing + depolarizing + amplitude damping
 import numpy as np
 from scipy.optimize import minimize
 import time
+import os
+import json
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+RESULTS_DIR = os.path.join(_HERE, 'blind_cqec_pkg', 'results')
 
 plt.rcParams.update({
     'font.family': 'Arial',
@@ -285,35 +290,14 @@ def estimate_channel_inversion(noisy, gamma_deph=0.5, p_depol=0.1, gamma_ad=0.05
     return est
 
 
+import sys
+sys.path.insert(0, os.path.join(_HERE, 'blind_cqec_pkg'))
+from blind_cqec.recovery import icec_recover as _pkg_icec_recover
+
+
 def icec_recover(noisy, target, n_copies=100):
-    """
-    ICEC recovery: given noisy state and estimated target, amplify
-    coherences toward the target estimate.
-    """
-    d = noisy.shape[0]
-    rec = np.zeros((d, d), dtype=complex)
-    for i in range(d):
-        for j in range(d):
-            if i == j:
-                rec[i, j] = target[i, j].real
-            else:
-                mag_target = abs(target[i, j])
-                phase_target = np.angle(target[i, j])
-                mag_noisy = abs(noisy[i, j])
-                if mag_noisy > 1e-15:
-                    # Amplify toward target magnitude
-                    amplified = mag_target
-                    rec[i, j] = amplified * np.exp(1j * phase_target)
-                else:
-                    rec[i, j] = 0.0
-    # Ensure PSD
-    eigvals, eigvecs = np.linalg.eigh(rec)
-    eigvals = np.maximum(eigvals, 0)
-    rec = eigvecs @ np.diag(eigvals) @ eigvecs.conj().T
-    tr = np.trace(rec).real
-    if tr > 1e-15:
-        rec = rec / tr
-    return rec
+    """Recovery interface of the paper: mode restriction + PSD projection (package implementation)."""
+    return _pkg_icec_recover(noisy, target, mode_tol=1e-10)
 
 
 # ============================================================
@@ -428,6 +412,18 @@ def main():
     print("=" * 70)
     print(f"True ground state energy: {E_true:.6f} Ha")
 
+    # Raw data dump (data-availability statement)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    with open(os.path.join(RESULTS_DIR, 'benchmark_blind_vqe_demo.json'), 'w') as fh:
+        json.dump({
+            'fig_vqe_demo': {
+                'E_true': E_true,
+                'noise': {'gamma_deph': 0.5, 'p_depol': 0.1, 'gamma_ad': 0.05},
+                'scenarios': [dict(res, abs_error=abs(res['final_energy'] - E_true))
+                              for res in results],
+            },
+        }, fh, indent=1, default=lambda o: o.tolist())
+
     # Interpretation
     err_noisy = abs(results[1]['final_energy'] - E_true)
     err_cohmax = abs(results[2]['final_energy'] - E_true)
@@ -481,7 +477,7 @@ def main():
                  label_str, ha='center', va='bottom', fontsize=8)
 
     plt.tight_layout()
-    fig_path = '/Users/deeptell01/Documents/alterego/personal/cqec/fig_vqe_demo.pdf'
+    fig_path = os.path.join(_HERE, 'fig_vqe_demo.pdf')
     plt.savefig(fig_path)
     print(f"\nFigure saved: {fig_path}")
 

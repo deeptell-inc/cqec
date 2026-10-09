@@ -29,6 +29,7 @@ from math import pi, ceil, log2, sqrt, exp
 from typing import Tuple, List, Dict
 import sys
 import os
+import json
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -51,14 +52,15 @@ plt.rcParams.update({
     'savefig.bbox': 'tight',
 })
 
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/personal/cqec')
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/personal/cqec/blind_cqec_pkg')
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
+sys.path.insert(0, os.path.join(_HERE, 'blind_cqec_pkg'))
+RESULTS_DIR = os.path.join(_HERE, 'blind_cqec_pkg', 'results')
 from core import (
     EnergySystem, trace_distance, coherence_l1,
     check_mode_inclusion, partial_dephasing,
     maximally_coherent_state,
 )
-from icec import ICECProtocol
 from benchmark_blind_cqec import (
     state_fidelity, ensure_valid_dm,
     estimate_naive,
@@ -161,8 +163,8 @@ def blind_icec_recover(rho_noisy: np.ndarray, rho_true_target: np.ndarray,
     The estimate is first passed through the mode-inclusion-restricted
     recovery map (blind_cqec.recovery.icec_recover, Theorem 1): coherence
     modes absent from the noisy state are zeroed, since the catalytic
-    transformation cannot regenerate them.  The finite-copy ICEC protocol
-    then converges toward this restricted target as n_copies grows.
+    transformation cannot regenerate them.  n_copies only enters through
+    the multi-copy estimators.
 
     Returns dict with fidelities measured against the TRUE target.
     """
@@ -190,10 +192,9 @@ def blind_icec_recover(rho_noisy: np.ndarray, rho_true_target: np.ndarray,
     restricted_target = pkg_icec_recover(rho_noisy, estimated_target,
                                          mode_tol=1e-10)
 
-    # Run ICEC toward the mode-restricted target
-    protocol = ICECProtocol(energies, restricted_target)
-    protocol.initialize(n_copies)
-    recovered, result = protocol.correct(rho_noisy, n_copies)
+    # Recovery map rho_rec = Pi(M_noisy(rho_est)) as defined in the manuscript
+    recovered = restricted_target
+    mode_satisfied = check_mode_inclusion(recovered, rho_noisy, energies, energies)
 
     # Measure against TRUE target
     rec_fidelity = state_fidelity(recovered, rho_true_target)
@@ -207,7 +208,7 @@ def blind_icec_recover(rho_noisy: np.ndarray, rho_true_target: np.ndarray,
         'recovery_fidelity': rec_fidelity,
         'trace_distance': rec_trace_dist,
         'coherence_ratio': coh_ratio,
-        'mode_satisfied': result.mode_condition_satisfied,
+        'mode_satisfied': mode_satisfied,
     }
 
 
@@ -601,7 +602,7 @@ def plot_estimation_vs_recovery(all_results, filename):
 
 if __name__ == "__main__":
     np.random.seed(42)
-    out_dir = '/Users/deeptell01/Documents/alterego/personal/cqec'
+    out_dir = _HERE
 
     print("=" * 80)
     print(" 4 Quantum Algorithms × Decoherence × Blind CQEC")
@@ -713,9 +714,11 @@ if __name__ == "__main__":
     print(f"  max |F_rec-F_est| : {max_dev:.4f}")
 
     print("\n  Per-dimension Pearson r:")
+    per_dim_r = {}
     for d in sorted(set(dims_all)):
         m = dims_all == d
         r_d = np.corrcoef(est_all[m], rec_all[m])[0, 1]
+        per_dim_r[int(d)] = r_d
         print(f"    d={d:>3d} (n={np.sum(m):>2d}): r = {r_d:.4f}")
 
     # --- Step 7: Minimum copies for F >= 0.95 ---
@@ -726,13 +729,30 @@ if __name__ == "__main__":
     for alg_name in sweep_results:
         header += f" {alg_name.split('(')[0].strip():>12s}"
     print(header)
+    min_copies = {}
     for strat_name in STRATEGIES:
         row = f"  {strat_name:<20s}"
+        min_copies[strat_name] = {}
         for alg_name in sweep_results:
             fids = np.array(sweep_results[alg_name][strat_name])
             above = np.where(fids >= 0.95)[0]
             cell = str(int(copy_values[above[0]])) if len(above) else '-'
+            min_copies[strat_name][alg_name] = cell
             row += f" {cell:>12s}"
         print(row)
+
+    # --- Raw data dump (data-availability statement) ---
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    with open(os.path.join(RESULTS_DIR, 'benchmark_blind_algorithms.json'), 'w') as fh:
+        json.dump({
+            'tab_main_results__fig_blind_alg_heatmap__fig_blind_alg_scatter': all_results,
+            'fig_blind_alg_copies': {'copy_values': copy_values, 'sweep_results': sweep_results},
+            'estimation_vs_recovery_correlation': {
+                'n_points': n_pts, 'pearson_r': r_pooled, 'slope': slope,
+                'intercept': intercept, 'r2': r2, 'max_abs_dev': max_dev,
+                'per_dim_r': per_dim_r,
+            },
+            'tab_min_copies': min_copies,
+        }, fh, indent=1, default=lambda o: o.tolist())
 
     print("\n[Done] All benchmarks complete.")

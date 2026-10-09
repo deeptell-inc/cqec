@@ -32,12 +32,16 @@ from typing import Tuple, Dict
 import time
 import sys
 import os
+import json
 
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/personal/cqec')
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
+sys.path.insert(0, os.path.join(_HERE, 'blind_cqec_pkg'))
+RESULTS_DIR = os.path.join(_HERE, 'blind_cqec_pkg', 'results')
 from core import (
     EnergySystem, partial_trace, tensor, trace_distance,
     coherence_l1, partial_dephasing, depolarizing_channel,
@@ -45,6 +49,7 @@ from core import (
     check_mode_inclusion,
 )
 from icec import CatalystState, CoherenceAmplifier, ICECProtocol
+from blind_cqec.recovery import icec_recover as pkg_icec_recover
 
 
 # ============================================================
@@ -185,93 +190,9 @@ def apply_combined_noise(rho: np.ndarray, dephasing_gamma: float = 1.0,
 def icec_recover(rho_noisy: np.ndarray, rho_target: np.ndarray,
                  energies: np.ndarray = None,
                  n_cycles: int = 1) -> Tuple[np.ndarray, Dict]:
-    """Apply ICEC protocol to recover a noisy state.
-
-    Tries the full ICECProtocol first; falls back to direct
-    coherence amplification if numerical issues arise.
-    """
-    d = rho_noisy.shape[0]
-    if energies is None:
-        energies = np.arange(d, dtype=float)
-
-    mode_ok = check_mode_inclusion(rho_target, rho_noisy, energies, energies)
-
-    if not mode_ok:
-        coh_noisy = coherence_l1(rho_noisy, energies)
-        if coh_noisy < 1e-15:
-            return rho_noisy, {'success': False, 'fidelity': state_fidelity(rho_noisy, rho_target)}
-
-    # For large dimensions, go directly to fallback (full protocol too expensive)
-    if d > 64:
-        return _icec_recover_fallback(rho_noisy, rho_target, energies, n_cycles)
-
-    # Try full protocol for small dimensions
-    try:
-        n_cop = min(50, max(10, 200 // d))
-        protocol = ICECProtocol(energies, rho_target)
-        protocol.initialize(n_copies=n_cop)
-        rho_recovered = rho_noisy.copy()
-        for cycle in range(n_cycles):
-            rho_recovered, _ = protocol.correct(rho_recovered, n_copies=n_cop)
-        fidelity = state_fidelity(rho_recovered, rho_target)
-        return rho_recovered, {'success': True, 'fidelity': fidelity}
-    except Exception:
-        pass
-
-    # Fallback: direct coherence amplification
-    return _icec_recover_fallback(rho_noisy, rho_target, energies, n_cycles)
-
-
-def _icec_recover_fallback(rho_noisy, rho_target, energies, n_cycles):
-    """Fallback ICEC: amplify residual coherence to target values.
-
-    Vectorized for performance at large d.
-    """
-    d = rho_noisy.shape[0]
-
-    # Check which off-diagonal elements survive
-    surviving_mask = (np.abs(rho_noisy) > 1e-15)
-    np.fill_diagonal(surviving_mask, False)
-
-    if not np.any(surviving_mask):
-        return rho_noisy, {'success': False, 'fidelity': state_fidelity(rho_noisy, rho_target)}
-
-    # Precompute: which modes can be generated from surviving modes
-    # A mode (i,j) with delta = E_i - E_j can be generated if delta
-    # is an integer multiple of any surviving mode's delta
-    surviving_deltas = set()
-    for i in range(d):
-        for j in range(d):
-            if surviving_mask[i, j]:
-                surviving_deltas.add(energies[i] - energies[j])
-
-    if not surviving_deltas:
-        return rho_noisy, {'success': False, 'fidelity': state_fidelity(rho_noisy, rho_target)}
-
-    surviving_deltas_arr = np.array(list(surviving_deltas))
-    surviving_deltas_arr = surviving_deltas_arr[np.abs(surviving_deltas_arr) > 1e-10]
-
-    # Build a mask of all modes that can be amplified (surviving or generatable)
-    can_amplify = surviving_mask.copy()
-    if len(surviving_deltas_arr) > 0:
-        delta_matrix = energies[:, None] - energies[None, :]
-        for sd in surviving_deltas_arr:
-            ratios = delta_matrix / sd
-            integer_mask = np.abs(ratios - np.round(ratios)) < 1e-8
-            can_amplify |= integer_mask
-        np.fill_diagonal(can_amplify, False)
-
-    rho_recovered = rho_noisy.copy()
-
-    for cycle in range(n_cycles):
-        # Set all amplifiable off-diagonal elements to target values
-        rho_recovered = np.where(can_amplify, rho_target, rho_recovered)
-        # Set diagonal to target
-        np.fill_diagonal(rho_recovered, np.diag(rho_target))
-        rho_recovered = ensure_valid_dm(rho_recovered)
-
-    fidelity = state_fidelity(rho_recovered, rho_target)
-    return rho_recovered, {'success': True, 'fidelity': fidelity}
+    """Unified recovery map: mode-restricted PSD projection (blind_cqec.recovery)."""
+    recovered = pkg_icec_recover(rho_noisy, rho_target, mode_tol=1e-10)
+    return recovered, {'success': True, 'fidelity': state_fidelity(recovered, rho_target)}
 
 
 # ============================================================
@@ -358,15 +279,7 @@ def estimate_iterative(noisy, energies, **kwargs):
     n_cop = 20 if d <= 32 else 10
     for it in range(n_iter):
         try:
-            if d <= 64:
-                protocol = ICECProtocol(energies, current_est)
-                protocol.initialize(n_cop)
-                recovered, result = protocol.correct(noisy, n_cop)
-                if not result.mode_condition_satisfied:
-                    break
-            else:
-                # For large d, use fallback directly to avoid expensive catalyst
-                recovered, _ = _icec_recover_fallback(noisy, current_est, energies, 1)
+            recovered, _ = icec_recover(noisy, current_est, energies, 1)
             new_est = 0.5 * recovered + 0.5 * current_est
             current_est = ensure_valid_dm(new_est)
         except Exception:
@@ -738,7 +651,7 @@ def print_summary_table(dims, results):
 # ============================================================
 
 if __name__ == "__main__":
-    out_dir = '/Users/deeptell01/Documents/alterego/personal/cqec'
+    out_dir = _HERE
 
     print("=" * 70)
     print(" Blind CQEC Dimension Sweep with Haar-Random States")
@@ -771,6 +684,14 @@ if __name__ == "__main__":
 
     # Print summary
     print_summary_table(dims, results)
+
+    # Raw data dump (data-availability statement)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    with open(os.path.join(RESULTS_DIR, 'benchmark_blind_dimension_sweep.json'), 'w') as fh:
+        json.dump({
+            'fig_dimension_sweep__fig_haar_distribution__fig_mle_comparison': {
+                'dims': dims, 'n_states': n_states, 'results': results},
+        }, fh, indent=1, default=lambda o: o.tolist())
 
     # Generate figures
     print("\nGenerating figures...")

@@ -18,11 +18,16 @@ faithfully captures circuit-level behavior on a small example.
 """
 from __future__ import annotations
 
+import os
+import json
 import time
 import warnings
 warnings.filterwarnings("ignore")
 
 import numpy as np
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+RESULTS_DIR = os.path.join(_HERE, "blind_cqec_pkg", "results")
 
 import matplotlib
 matplotlib.use("Agg")
@@ -222,7 +227,8 @@ def run_sanity_check() -> dict:
     return {"p_depol": p_depol, "rows": rows}
 
 
-def plot_sanity(results: dict, out_path: str = "fig_circuit_sanity.pdf") -> None:
+def plot_sanity(results: dict,
+                out_path: str = os.path.join(_HERE, "fig_circuit_sanity.pdf")) -> None:
     rows = results["rows"]
     names  = [r["name"] for r in rows]
     f_n    = [r["f_noisy"] for r in rows]
@@ -262,6 +268,12 @@ def main() -> None:
     for r in results["rows"]:
         print(f"{r['name']:<22s} "
               f"{r['f_noisy']:>10.4f} {r['f_cm']:>10.4f} {r['f_ci']:>10.4f} {r['p_eff']:>8.3f}")
+
+    # Raw data dump (data-availability statement)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    with open(os.path.join(RESULTS_DIR, "benchmark_blind_circuit_sanity.json"), "w") as fh:
+        json.dump({"tab_circuit_sanity__fig_circuit_sanity": results},
+                  fh, indent=1, default=lambda o: o.tolist())
 
     plot_sanity(results)
 

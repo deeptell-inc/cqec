@@ -42,6 +42,16 @@ dependencies = [
 plot = ["matplotlib>=3.6"]
 test = ["pytest>=7.0", "pytest-cov"]
 dev  = ["pytest>=7.0", "pytest-cov", "matplotlib>=3.6", "ruff", "build"]
+# Everything the paper's benchmark_blind_*.py scripts need beyond the core
+# package (versions = those used to generate results/*.json; see REPRODUCE.md)
+bench = [
+    "numpy>=1.22,<3",
+    "scipy>=1.10",
+    "matplotlib>=3.6",
+    "qiskit>=1.0",
+    "qiskit-aer>=0.14",
+    "sympy>=1.12",
+]
 
 [project.urls]
 Homepage      = "https://github.com/deeptell-inc/blind_cqec_pkg"

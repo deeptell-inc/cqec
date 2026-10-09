@@ -1,0 +1,36 @@
+PHYSICAL REVIEW A — submission form fields
+===========================================
+
+Journal / article type: Physical Review A, Regular Article
+Section: Quantum information
+Title: Blind catalytic quantum error correction: target-state estimation and fidelity bounds
+
+Author (sole):
+  Hikaru Wakaura (corresponding) — QIRI (Quantum Integrated Research Institute Inc.), 1-16-3 Akasaka, Minato-ku, Tokyo 107-0061, Japan — h.wakaura@qiri.co.jp — ORCID 0009-0001-2341-7710
+
+Abstract (290 words):
+Near-term quantum computers must protect fragile coherence against decoherence to deliver useful results. Catalytic quantum error correction (CQEC) addresses this by amplifying residual coherence with a reusable catalyst, achieving threshold-free recovery whenever the target coherent modes survive in the noisy state. However, the original protocol requires complete knowledge of the ideal target—an assumption that fails for variational and iterative algorithms whose output is unknown to the correction module. Here we show that this requirement can be removed by estimating the target from the noisy output alone, in a two-stage protocol we call blind CQEC. At the density-matrix level studied here the recovery map is the mode-inclusion-restricted projection of the estimate, so recovery fidelity obeys F_rec >= 1 - 2|rho_est - rho_target|_1 - 2Delta_mode: the design of blind CQEC reduces to a classical estimation problem under a recovery ceiling set by mode survival. We benchmark five estimation strategies across three noise channels, four quantum algorithms (d = 4–64), Haar-random states, and mixed targets, assuming oracle access to the noisy density matrix (its measurement cost is analyzed, not simulated). With exactly calibrated noise, channel inversion coincides with the oracle and both are capped by the mode-survival ceiling (F_rec = 0.77 at d = 64 with the 10^-10 mode threshold); noise-model-free coherence maximization matches the ceiling to within 1.5% at d <= 16; the choice between them is set by calibration accuracy, with the dephasing rate exponentially dominant. Unlike error-mitigation methods, blind CQEC returns the state itself rather than corrected expectation values. A noisy-VQE demonstration for H_2 yields 3.4x energy-error reduction. These results chart the estimator design space for blind, threshold-free recovery where pre-encoding is unavailable, and identify the two open problems—an operational measurement model and a circuit-level catalytic map—that remain before deployment.
+
+Manuscript: RevTeX 4.2, pra, twocolumn; 21 pages, 17 figures, 9 tables, 59 references.
+Preprint: arXiv:2604.11857 (v2 with this text to be posted; give the arXiv ID in the submission form).
+
+Data availability (paste verbatim):
+All simulation code, raw numerical data (results/*.json), and plotting scripts used to generate every figure and table are publicly available at https://github.com/deeptell-inc/blind_cqec_pkg (package blind_cqec v0.2.0, MIT license). Every figure and table is mapped to its generating script and results file in REPRODUCE.md of that repository; results are deterministic given the recorded seeds.
+
+Funding: none. Competing interests: none.
+Prior submission: an earlier version was reviewed at another journal and declined; the corrections are incorporated (see cover letter). Not under consideration elsewhere.
+
+Suggested referees (justifications in cover_letter.pdf):
+  Ryuji Takagi (NTU Singapore) — ryuji.takagi@ntu.edu.sg
+  Mark M. Wilde (Cornell) — wilde@cornell.edu
+  Andreas Winter (UAB Barcelona) — andreas.winter@uab.cat
+  Bálint Koczor (Oxford) — balint.koczor@maths.ox.ac.uk
+  Daniel Stilck França (ENS Lyon/CNRS) — daniel.stilck-franca@ens-lyon.fr
+  Iman Marvian (Duke) — iman.marvian@duke.edu
+Non-preferred referees: none
+
+Files in this bundle:
+  manuscript.pdf      — compiled RevTeX manuscript
+  cover_letter.pdf    — cover letter
+  source/             — paper_blind_cqec_pra.tex, .bbl, .bib, fig_*.pdf (17); compiles with pdflatex + bibtex (apsrev4-2)
+  CITATION_AUDIT.md   — internal citation verification record (do NOT upload)

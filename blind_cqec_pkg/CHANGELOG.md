@@ -34,6 +34,13 @@ It contains a **breaking semantic change** to `icec_recover`.
   An inconsistency between a uniform-decay forward channel and the
   gap-dependent inversion had invalidated the previously reported
   dimension-crossover, sensitivity, and hybrid results.
+- **Single recovery map everywhere.** Every benchmark script now routes its
+  recovery through `icec_recover` (mode restriction + PSD projection). An
+  undocumented copy-dependent interpolation in the algorithm benchmark, a
+  script-local recovery that ignored the noisy state in the QEM comparison,
+  and script-local variants with a 1e-15 threshold elsewhere are removed;
+  `results/*.json` are regenerated. New `benchmark_blind_tau_sensitivity.py`
+  tabulates the dependence of the d = 64 ceilings on `mode_tol`.
 - Dimension sweeps are capped at d <= 64: the exact dephasing inversion
   factor `exp(gamma*(d-1))` overflows double precision at d >= 128.
 
@@ -44,6 +51,14 @@ It contains a **breaking semantic change** to `icec_recover`.
 - Three new test invariants: `F_rec <= F_est` always; annihilated modes
   stay dead even under an oracle estimate; larger `mode_tol` never
   improves fidelity. Test suite: 91 tests.
+
+### Reproducibility
+
+- All `benchmark_blind_*.py` scripts use paths relative to their own
+  location (no author-machine paths) and write their numerical results to
+  `results/*.json`; `REPRODUCE.md` maps every manuscript figure and table
+  to its script, results key, and runtime. Benchmark-only dependencies are
+  declared under the `bench` extra.
 
 ### Documentation
 

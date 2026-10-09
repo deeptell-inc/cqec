@@ -7,6 +7,13 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import time
+import os
+import json
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+RESULTS_DIR = os.path.join(_HERE, 'blind_cqec_pkg', 'results')
+import sys
+sys.path.insert(0, os.path.join(_HERE, 'blind_cqec_pkg'))
 
 plt.rcParams.update({
     'font.family': 'Arial',
@@ -108,7 +115,8 @@ def estimate_ch_inv(rho, gamma=0, p=0, gad=0):
     return psd_project(est)
 
 def icec_recover(noisy, target_est):
-    return psd_project(target_est)
+    from blind_cqec.recovery import icec_recover as _pkg
+    return _pkg(noisy, target_est)
 
 # ---------------- Existing QEM methods ----------------
 def zne_extrapolate(rho_orig, noise_fn, noise_scales=(1.0, 1.5, 2.0), obs=None):
@@ -225,7 +233,7 @@ ax2.grid(True, alpha=0.3, axis='y')
 ax2.set_ylim(0, 1.05)
 
 plt.tight_layout()
-plt.savefig('/Users/deeptell01/Documents/alterego/personal/cqec/fig_qem_compare.pdf')
+plt.savefig(os.path.join(_HERE, 'fig_qem_compare.pdf'))
 plt.close()
 print("  Saved: fig_qem_compare.pdf")
 
@@ -344,7 +352,7 @@ for bar, err in zip(bars, errors):
             f'{err:.3f}', ha='center', fontsize=9)
 ax.grid(True, alpha=0.3, axis='y')
 plt.tight_layout()
-plt.savefig('/Users/deeptell01/Documents/alterego/personal/cqec/fig_vqe_d16.pdf')
+plt.savefig(os.path.join(_HERE, 'fig_vqe_d16.pdf'))
 plt.close()
 print("  Saved: fig_vqe_d16.pdf")
 
@@ -396,7 +404,7 @@ ax.set_title(f'Sample complexity at $d$={d}')
 ax.legend()
 ax.grid(True, alpha=0.3, which='both')
 plt.tight_layout()
-plt.savefig('/Users/deeptell01/Documents/alterego/personal/cqec/fig_sample_complexity.pdf')
+plt.savefig(os.path.join(_HERE, 'fig_sample_complexity.pdf'))
 plt.close()
 print("  Saved: fig_sample_complexity.pdf")
 
@@ -409,3 +417,19 @@ for name, t in overhead.items():
     print(f"    {name:15s}: {t:.3f} ms, copies={copies_required[name]}")
 print(f"\n  LiH VQE errors: {[f'{results_vqe[s][2]:.3f}' for s in scenarios]}")
 print(f"\n  Figures: fig_qem_compare.pdf, fig_vqe_d16.pdf, fig_sample_complexity.pdf")
+
+# Raw data dump (data-availability statement)
+os.makedirs(RESULTS_DIR, exist_ok=True)
+with open(os.path.join(RESULTS_DIR, 'benchmark_blind_qem_compare.json'), 'w') as fh:
+    json.dump({
+        'fig_qem_compare': {'dims': dims, 'n_samples': n_samples,
+                            'fidelities': results},
+        'tab_overhead': {'ms_per_call': overhead, 'copies_required': copies_required},
+        'fig_vqe_d16': {'E_true': E_true,
+                        'scenarios': {sc: dict(zip(('E_opt', 'E_true_final', 'abs_error'),
+                                                   results_vqe[sc]))
+                                      for sc in scenarios}},
+        'fig_sample_complexity': {'n_range': n_range, 'd': d, 'n_trials': n_trials,
+                                  'infidelity_blind_cm': inf_blind_cm,
+                                  'infidelity_blind_ci': inf_blind_ci},
+    }, fh, indent=1, default=lambda o: o.tolist())

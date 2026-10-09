@@ -1,0 +1,58 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype,hyperref,xcolor}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\setlength{\parskip}{0.4em}\setlength{\parindent}{0pt}\sloppy
+\begin{document}
+
+\textbf{Cover letter to the Editors of \emph{Quantum Science and Technology}}
+
+\vspace{0.3cm}
+Hikaru Wakaura, Taiki Tanimae\\
+QIRI (Quantum Integrated Research Institute Inc.), 1-16-3, Akasaka, Minato-ku, Tokyo 107-0061, Japan\\
+\href{mailto:h.wakaura@qiri.co.jp}{h.wakaura@qiri.co.jp} \quad ORCID: 0009-0001-2341-7710
+
+\vspace{0.2cm}
+September 14, 2026
+
+\vspace{0.3cm}
+Dear Editors,
+
+On September 14, 2026, we submitted our manuscript ``\textbf{Blind catalytic quantum error correction: target-state estimation and fidelity bounds under an idealized catalytic recovery interface}'', authored by Hikaru Wakaura and Taiki Tanimae, for consideration as a Paper in \emph{Quantum Science and Technology}.
+The submission consists of the main manuscript (17 figures, 9 tables) and a frozen release of the open-source package \texttt{blind\_cqec} v0.2.0 (MIT license, \url{https://github.com/deeptell-inc/blind_cqec_pkg}) with a 91-test reproducibility suite, shipped raw results files, and a script-to-figure map.
+
+\textbf{What we discovered.}
+Catalytic quantum error correction (CQEC) is a threshold-free state-recovery framework whose original formulation requires the ideal target state to be known exactly.
+In this study we show that the target-knowledge requirement can be displaced onto a classical estimation problem.
+Under an explicitly stated idealized recovery interface---the mode-inclusion-restricted projection of the estimate---recovery fidelity is bounded by estimation fidelity plus a mode-survival penalty, and an 84-condition benchmark realizes both regimes of that bound.
+The resulting estimator design-space map is sharp: with exactly calibrated noise, channel inversion coincides with the oracle at every dimension and both are capped by a mode-survival ceiling; the noise-model-free alternative, coherence maximization, matches the ceiling to within $1.5\%$ at $d \leq 16$ and degrades with dimension; and the operational choice between the two is decided by calibration accuracy, with the dephasing rate exponentially dominant.
+
+\textbf{Why this matters.}
+The result separates, for the CQEC setting, what is a classical estimation question from what is a structural limit of catalytic recovery, and it reports the negative results with the same prominence as the positive ones: coherence maximization is actively harmful for mixed targets, no strategy reaches high fidelity where mode annihilation sets the ceiling, and universal single-copy recovery is impossible for any deterministic target-independent apparatus.
+This map is the prerequisite for the two open problems the manuscript states as future work---an explicit joint covariant recovery channel and an operational measurement model---and it is directly useful to practitioners choosing an estimator for variational and iterative algorithms whose ideal output is unknown to the correction module.
+
+\textbf{Why \emph{Quantum Science and Technology}.}
+The manuscript sits at the interface of quantum resource theory, quantum state estimation, and near-term error handling, which is the journal's core scope, and it is accompanied by a fully reproducible open-source implementation with raw data and a figure-by-figure reproduction map, matching the journal's emphasis on practically relevant, verifiable results.
+The claims are deliberately scoped to what is demonstrated, and the scope is stated in the abstract, methods, and limitations.
+
+\textbf{Suggested referees.}
+\begin{enumerate}\setlength{\itemsep}{0pt}
+\item Ryuji Takagi, Nanyang Technological University, Singapore (\texttt{ryuji.takagi@ntu.edu.sg}) --- catalytic coherence transformations.
+\item Mark M.\ Wilde, Cornell University, USA (\texttt{wilde@cornell.edu}) --- quantum Shannon theory, channel fidelity bounds.
+\item Andreas Winter, Universitat Aut\`onoma de Barcelona, Spain (\texttt{andreas.winter@uab.cat}) --- catalytic resource theories.
+\item B\'alint Koczor, University of Oxford, UK (\texttt{balint.koczor@maths.ox.ac.uk}) --- error mitigation, near-term VQE.
+\item Daniel Stilck Fran\c{c}a, ENS Lyon / CNRS, France (\texttt{daniel.stilck-franca@ens-lyon.fr}) --- quantum state estimation, copy complexity.
+\item Iman Marvian, Duke University, USA (\texttt{iman.marvian@duke.edu}) --- asymmetry resource theory, covariant operations.
+\end{enumerate}
+\textbf{Non-preferred referees.} None.
+
+\textbf{Statements.}
+This manuscript is not under consideration elsewhere. A previous version was reviewed at another journal; the present version incorporates the resulting corrections, in particular the explicit statement that the catalytic transformation itself is not simulated and that all resource counts are conditional on oracle density-matrix access.
+Both authors have read and approved the submission. We declare no competing interests.
+
+\vspace{0.4cm}
+Sincerely,\\[0.4em]
+Hikaru Wakaura, Taiki Tanimae\\
+QIRI Inc., Tokyo
+\end{document}

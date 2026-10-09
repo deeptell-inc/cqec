@@ -43,7 +43,11 @@ plt.rcParams.update({
     'savefig.bbox': 'tight',
 })
 
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/personal/cqec')
+import json
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
+sys.path.insert(0, os.path.join(_HERE, 'blind_cqec_pkg'))
+RESULTS_DIR = os.path.join(_HERE, 'blind_cqec_pkg', 'results')
 from core import (
     EnergySystem, partial_trace, tensor, trace_distance,
     coherence_l1, quantum_fisher_information,
@@ -53,6 +57,7 @@ from core import (
     is_valid_density_matrix, is_full_rank,
 )
 from icec import CatalystState, CoherenceAmplifier, ICECProtocol
+from blind_cqec.recovery import icec_recover as pkg_icec_recover
 
 
 # ============================================================
@@ -184,12 +189,7 @@ def estimate_iterative(noisy: np.ndarray, energies: np.ndarray,
 
     for it in range(n_iterations):
         # Run ICEC with current estimate as target
-        protocol = ICECProtocol(energies, current_est)
-        protocol.initialize(n_copies)
-        recovered, result = protocol.correct(noisy, n_copies)
-
-        if not result.mode_condition_satisfied:
-            break
+        recovered = pkg_icec_recover(noisy, current_est)
 
         # Use recovered state to refine: average with current estimate
         # (damped update to avoid oscillation)
@@ -297,9 +297,7 @@ def run_blind_benchmark(
                 )
 
             # Run ICEC with estimated target
-            protocol = ICECProtocol(energies, estimated_target)
-            protocol.initialize(n_copies)
-            recovered, result = protocol.correct(noisy, n_copies)
+            recovered = pkg_icec_recover(noisy, estimated_target)
 
             # Measure against TRUE target
             f = state_fidelity(recovered, target_state)
@@ -450,7 +448,7 @@ def plot_fidelity_gap(all_results: dict, noise_params: np.ndarray,
 
 if __name__ == "__main__":
     np.random.seed(42)
-    out_dir = '/Users/deeptell01/Documents/alterego/personal/cqec'
+    out_dir = _HERE
 
     print("=" * 70)
     print(" Blind CQEC Benchmark: Target-Unknown Fidelity Analysis")
@@ -534,5 +532,15 @@ if __name__ == "__main__":
         d = data['trace_dist'][idx_ad05]
         c = data['coh_ratio'][idx_ad05]
         print(f"  {name:<30s}  {f:8.4f}  {d:10.4f}  {c:10.4f}")
+
+    # Raw data dump (data-availability statement)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    with open(os.path.join(RESULTS_DIR, 'benchmark_blind_cqec.json'), 'w') as fh:
+        json.dump({
+            'fig_blind_dephasing': {'gamma': deph_params, 'results': res_deph},
+            'fig_blind_depolarizing': {'p': depol_params, 'results': res_depol},
+            'fig_blind_amplitude_damping': {'gamma_AD': amp_params, 'results': res_amp},
+            'fig_blind_qutrit': {'gamma': qutrit_params, 'results': res_qutrit},
+        }, fh, indent=1, default=lambda o: o.tolist())
 
     print("\n[Done] All blind CQEC benchmarks complete.")

@@ -30,8 +30,8 @@ the mode-inclusion restriction above, and dimension caps at `d <= 64`
 
 ## Companion paper
 
-**Title:** *Blind Catalytic Quantum Error Correction: Target-State Estimation and Fidelity Recovery Without A Priori Knowledge*
-**Authors:** Hikaru Wakaura, Taiki Tanimae (QIRI Inc.), 2026
+**Title:** *Blind catalytic quantum error correction: target-state estimation and fidelity bounds*
+**Author:** Hikaru Wakaura (QIRI Inc.), 2026
 **Preprint:** https://arxiv.org/abs/2604.11857 (DOI: [10.48550/arXiv.2604.11857](https://doi.org/10.48550/arXiv.2604.11857))
 **Companion paper (foundational CQEC framework):** Wakaura & Tanimae, *Catalytic Quantum Error Correction: Theory, Efficient Catalyst Preparation, and Numerical Benchmarks* — [arXiv:2603.25774](https://arxiv.org/abs/2603.25774v4)
 **Repository:** https://github.com/deeptell-inc/blind_cqec_pkg
@@ -153,10 +153,9 @@ If you use this software, please cite both the package and the paper:
 
 ```bibtex
 @article{Wakaura2026blindCQEC,
-  author  = {Wakaura, Hikaru and Tanimae, Taiki},
-  title   = {Blind Catalytic Quantum Error Correction:
-             Target-State Estimation and Fidelity Recovery Without
-             {A Priori} Knowledge},
+  author  = {Wakaura, Hikaru},
+  title   = {Blind catalytic quantum error correction:
+             target-state estimation and fidelity bounds},
   year    = {2026},
   eprint        = {2604.11857},
   archivePrefix = {arXiv},

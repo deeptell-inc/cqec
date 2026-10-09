@@ -51,7 +51,7 @@ Near-term quantum computers must protect fragile coherence against decoherence t
 Catalytic quantum error correction (CQEC) addresses this challenge by amplifying residual coherence with a reusable catalyst, achieving threshold-free recovery whenever the target coherent modes survive in the noisy state.
 However, the original protocol requires complete knowledge of the ideal target---an assumption that fails for variational and iterative algorithms whose output is unknown to the correction module.
 Here we show that this requirement can be removed by estimating the target from the noisy output alone, in a two-stage protocol we call \emph{blind CQEC}.
-At the density-matrix level studied here, the recovery map reduces to a mode-inclusion-restricted projection of the estimate, so recovery fidelity is governed by estimation fidelity up to a mode-survival penalty; we make this structural property explicit and derive the corresponding bound $\Frec \geq 1 - 2\|\rhoe - \rhot\|_1 - \Delta_\mathrm{mode}$, reducing the design of blind CQEC to a classical estimation problem bounded by a hard recovery ceiling.
+At the density-matrix level studied here, the recovery map reduces to a mode-inclusion-restricted projection of the estimate, so recovery fidelity is governed by estimation fidelity up to a mode-survival penalty; we make this structural property explicit and derive the corresponding bound $\Frec \geq 1 - \|\rhoe - \rhot\|_1 - \Delta_\mathrm{mode}$, reducing the design of blind CQEC to a classical estimation problem bounded by a hard recovery ceiling.
 We benchmark five estimation strategies across three noise channels, four quantum algorithms ($d = 4$--$64$), Haar-random states, and mixed targets, assuming oracle access to the noisy density matrix (the measurement cost of realizing this access is analyzed but not simulated).
 With exactly calibrated parameters, channel inversion coincides with the oracle on every benchmark, and both are capped by the mode-survival ceiling (down to $\Frec = 0.74$ at $d = 64$, and zero recoverability for the Regev state under strong dephasing); coherence maximization requires no noise model, matches the ceiling to within $1.5\%$ at $d \leq 16$, and the operational choice between the two is set by calibration accuracy, with the dephasing rate exponentially dominant.
 A noisy-VQE demonstration for H$_2$ yields $3.4\times$ energy-error reduction, and a \texttt{qiskit-aer} exercise with oracle-calibrated noise parameters illustrates the pipeline on circuit-derived states.
@@ -73,7 +73,7 @@ This combination of threshold-free recovery and post-hoc applicability makes CQE
 However, in its original formulation CQEC requires \emph{complete knowledge of the target state} $\rhot$, which has been identified as the principal conceptual gap between CQEC and conventional QEC~\cite{Wakaura2026unified}.
 
 In this study, we substantially relax this requirement by introducing \emph{blind CQEC},\footnote{We use ``blind'' in the operational sense that the target state is unknown to the correction protocol, distinct from blind quantum computing, which concerns hiding computation from an untrusted server.} where the target state $\rhot$ is estimated from the noisy state $\rhon$ (or multiple noisy copies) before catalytic correction.
-We found that the recovery fidelity is bounded as $\Frec \geq 1 - 2\|\rhoe - \rhot\|_1 - \Delta_\mathrm{mode}$ (Sec.~\ref{sec:lipschitz_proof}), where $\Delta_\mathrm{mode}$ is the weight of target coherences whose modes the noise has annihilated, and numerically that the 84-condition benchmark realizes both regimes of this bound: recovery tracks estimation exactly where all modes survive ($r \geq 0.998$ at $d \leq 8$), and is capped by the mode-survival ceiling where they do not ($r = 0.77$ at $d = 64$, with a perfect estimate recovering only $\Frec = 0.41$ in the extreme case).
+We found that the recovery fidelity is bounded as $\Frec \geq 1 - \|\rhoe - \rhot\|_1 - \Delta_\mathrm{mode}$ (Sec.~\ref{sec:lipschitz_proof}), where $\Delta_\mathrm{mode}$ is the weight of target coherences whose modes the noise has annihilated, and numerically that the 84-condition benchmark realizes both regimes of this bound: recovery tracks estimation exactly where all modes survive ($r \geq 0.998$ at $d \leq 8$), and is capped by the mode-survival ceiling where they do not ($r = 0.77$ at $d = 64$, with a perfect estimate recovering only $\Frec = 0.41$ in the extreme case).
 The result shows that the performance of blind CQEC decomposes into a classical estimation problem plus a hard structural ceiling set by mode survival, reducing the design space of the protocol to the choice of estimator.
 We frame the problem as a two-stage protocol:
 \begin{enumerate}
@@ -108,13 +108,16 @@ A covariant operation satisfies $\Lambda \circ \UU_t = \UU_t \circ \Lambda$ for 
 The modes of asymmetry $\DD(\rho) = \{\Delta_{ij} = E_i - E_j \mid \rho_{ij} \neq 0\}$ characterize the coherence structure.
 The resonant coherent modes $\CC(\rho) = \langle \DD(\rho) \rangle_\mathbb{Z}$ form the integer lattice generated by $\DD(\rho)$.
 
-\noindent\textbf{Theorem 1} (Shiraishi--Takagi~\cite{Shiraishi2024}).---\textit{%
-A catalytic covariant transformation $\rho \otimes c \mapsto \tau$ with $\tr_C[\tau] = \rho'$, $\tr_S[\tau] = c$ exists if and only if $\CC(\rho') \subseteq \CC(\rho)$ and $\rho$ is full rank.}
+\noindent\textbf{Theorem 1} (Shiraishi--Takagi~\cite{Shiraishi2024}, Theorem~2).---\textit{%
+If $\CC(\rho') \subseteq \CC(\rho)$, then for every $\epsilon > 0$ there exist a catalyst $c$ and a covariant operation $\Lambda$ with $\Lambda(\rho \otimes c) = \tau$, $\tr_S[\tau] = c$, and $\|\tr_C[\tau] - \rho'\|_1 \leq \epsilon$ (correlated-catalytic conversion with arbitrary accuracy); if in addition $\rho'$ is full rank, the conversion can be made exact.}
 
-The CQEC protocol~\cite{Wakaura2026unified} applies Theorem~1 as follows: given a noisy state $\rhon = \EE(\rhot)$ and a catalyst $c$, find a covariant map $\Lambda$ such that $\Lambda(\rhon \otimes c) = \tau$ with $\tr_C[\tau] \approx \rhot$.
+Two features of this statement matter for what follows.
+First, mode inclusion is a \emph{sufficient} condition for reachability, not a characterization, and the theorem is an existence statement for each fixed source--target pair: it does not supply a target-independent apparatus, nor a cost.
+Second, the mode set $\CC(\rho)$ is determined by which off-diagonal elements of $\rho$ are nonzero; it is unrelated to the rank of $\rho$ (a full-rank diagonal state has no coherent modes at all).
+In our benchmarks, mode survival is therefore never inferred from rank: it is checked explicitly, element by element, against the threshold of Sec.~\ref{sec:computational}, and estimated coherences on modes absent from $\rhon$ are removed before recovery (Sec.~\ref{sec:implementation}).
+
+The CQEC protocol~\cite{Wakaura2026unified} applies Theorem~1 as follows: given a noisy state $\rhon = \EE(\rhot)$, it constructs a catalyst $c$ and a covariant map $\Lambda$ for the pair $(\rhon, \rhot)$ such that $\tr_C[\Lambda(\rhon \otimes c)] \approx \rhot$.
 This requires knowing $\rhot$ explicitly to construct $\Lambda$.
-Note that Theorem~1 requires the input state to be full rank.
-In our benchmarks, this condition is satisfied because depolarizing noise ($\rho \mapsto (1-p)\rho + pI/d$) always produces full-rank states, and the combined noise model includes a depolarizing component; benchmarks without a depolarizing component rely on the mode-restriction step described below rather than on the full-rank guarantee.
 
 \subsection{Implementation via density-matrix simulation}
 \label{sec:implementation}
@@ -164,17 +167,27 @@ In that case a rigorous bound follows directly from the Fuchs--van de Graaf ineq
 where $\Delta_{\mathrm{mode}}$ is the mode-restriction penalty: the trace-norm weight of the estimated coherences that cannot be recovered because the corresponding modes are absent from $\rhon$.
 Under the noise models of Sec.~\ref{sec:noise} at moderate strength, no coherence is driven exactly to zero and $\Delta_{\mathrm{mode}}$ vanishes to numerical precision; it becomes appreciable only under deep dephasing at large mode gaps.
 
-For general (not necessarily PSD) Hermitian inputs, one needs in addition the stability of the projection $\Pi$ in trace norm.
-The clipping map $A \mapsto A_+$ is the metric projection onto the PSD cone with respect to the \emph{Frobenius} norm and is therefore nonexpansive in that norm, $\|A_+ - B_+\|_F \leq \|A - B\|_F$, by the standard nonexpansiveness of projections onto closed convex sets.
-In trace norm the sharp constant is more delicate: the matrix absolute value (and hence the positive part) is not operator Lipschitz in general, and the best rigorous constants carry a logarithmic dimension dependence~\cite{Davies1988}.
-Numerically, over $10^5$ random Hermitian pairs at $d \leq 16$ we observe $\|A_+ - B_+\|_1 \leq \|A - B\|_1$ with maximal ratio $1.000$, and we conjecture that the constant-1 bound holds for trace-one Hermitian inputs; combining it with the renormalization step as in the display below then gives the working bound
+For general (not necessarily PSD) Hermitian inputs $A$ with $\tr A = 1$, the relevant question is the stability of $\Pi$ \emph{relative to a density matrix}.
+Two-sided Lipschitz continuity of the clipping map in trace norm fails: $\|A_+ - B_+\|_1 \leq \|A - B\|_1$ is false for noncommuting Hermitian $A, B$ (explicit $3 \times 3$ trace-one counterexamples exist, and the matrix absolute value is known not to be operator Lipschitz~\cite{Davies1988}).
+What is needed, however, is only the one-sided bound against the target, and that is rigorous:
+
+\noindent\textbf{Lemma 1.}---\textit{For Hermitian $A$ with $\tr A = 1$ and any density matrix $\sigma$, $\|\Pi(A) - \sigma\|_1 \leq 2\,\|A - \sigma\|_1$.}
+
+\noindent\textit{Proof.}
+Write $A = A_+ - A_-$ with $A_\pm \geq 0$ orthogonally supported, and let $s = \tr A_-$, so $\tr A_+ = 1 + s$.
+Then $\Pi(A) - A = A_+/(1+s) - A_+ + A_- = A_- - \tfrac{s}{1+s}A_+$, whose two terms are orthogonally supported, so $\|\Pi(A) - A\|_1 = s + s = 2s$.
+On the other hand, testing $A - \sigma$ against the negative spectral projector $P_-$ of $A$ gives $\tr[P_-(A - \sigma)] = -s - \tr[P_-\sigma] \leq -s$, and against $I - P_-$ gives $\tr[(I-P_-)(A-\sigma)] = s + \tr[P_-\sigma] \geq s$ (using $\tr A = \tr\sigma$); hence $\|A - \sigma\|_1 \geq 2s$.
+The triangle inequality yields $\|\Pi(A) - \sigma\|_1 \leq \|\Pi(A) - A\|_1 + \|A - \sigma\|_1 \leq 2\|A - \sigma\|_1$. \hfill$\square$
+
+\noindent Applying Lemma~1 with $A = \mathcal{M}_{\rhon}(\rhoe)$ and $\sigma = \rhot$, together with the Fuchs--van de Graaf inequality, gives
 \begin{equation}
-\Frec \geq 1 - 2\|\rhoe - \rhot\|_1 - \Delta_{\mathrm{mode}},
+\Frec \geq 1 - 2\|\rhoe - \rhot\|_1 - 2\Delta_{\mathrm{mode}},
 \label{eq:explicit_bound}
 \end{equation}
-via $\Pi(A) - \Pi(B) = \tfrac{1}{t_A}(A_+ - B_+) + (\tfrac{1}{t_A} - \tfrac{1}{t_B})B_+$ with $t_A = \tr A_+ \geq 1$ and $|t_A - t_B| \leq \|A - B\|_1$.
-We flag clearly which parts of this chain are proven and which are conjectured: Eq.~\eqref{eq:fidelity_penalty} for density-matrix inputs is rigorous; Eq.~\eqref{eq:explicit_bound} for general Hermitian inputs rests on the numerically supported constant-1 clipping bound (a rigorous version holds with an additional $O(\log d)$ factor~\cite{Davies1988}).
-We also caution that the empirical regression slope $a \approx 0.98$ of Sec.~\ref{sec:correlation} is a descriptive statistic of the benchmark ensemble, not a measurement of a Lipschitz constant.
+which reduces to Eq.~\eqref{eq:fidelity_penalty} (with constant~1) whenever the input to $\Pi$ is already a density matrix, as is the case for every estimator in this paper.
+We stress the scope of both bounds: they concern the density-matrix-level interface $\Pi \circ \mathcal{M}_{\rhon}$ of Eq.~\eqref{eq:recovery_structure}, i.e.\ the stability of the idealized recovery output with respect to the target estimate.
+They do not establish continuity or finite-resource stability of a physically constructed, target-dependent catalytic channel; that is a separate open problem (Sec.~\ref{sec:limitations}).
+We also caution that the empirical regression slope of Sec.~\ref{sec:correlation} is a descriptive statistic of the benchmark ensemble, not a measurement of a Lipschitz constant.
 
 For estimators that consume $n$ noisy state preparations, the estimation error decomposes as $\|\rhoe - \rhot\|_1 \leq \|\overline{\rhoe} - \rhot\|_1 + O(n^{-1/2})$ into \emph{systematic bias} and \emph{statistical fluctuation}, giving
 \begin{equation}
@@ -183,7 +196,6 @@ For estimators that consume $n$ noisy state preparations, the estimation error d
 \end{equation}
 Eqs.~\eqref{eq:fidelity_penalty}--\eqref{eq:fidelity_penalty_multicopy} motivate our approach: within this framework, minimizing the estimation error is the \emph{only} available lever, which is why the remainder of the paper is devoted to estimator design.
 \phantomsection\label{lemma:lipschitz}
-For circuit-level ICEC implementations~\cite{Wakaura2026unified}, the catalytic amplification step introduces additional channel non-idealities that may further weaken~$L$; we leave the analytical extension to that setting for future work.
 
 
 \subsection{Dimension dependence of the estimation error}
@@ -198,9 +210,6 @@ This is the mechanism behind the monotonic decay of the coherence-maximization c
 Channel inversion behaves differently: when the noise channel is invertible and its parameters are known \emph{exactly}, the inversion is exact at every dimension and the estimation error is zero up to numerical precision.
 Its practical limitation is therefore not dimension per se but \emph{parameter misspecification}: a relative error $\delta$ in the assumed noise parameters produces a residual estimation error that grows with both $\delta$ and~$d$ (because the dephasing inversion factor $e^{+\gamma|\Delta_{ij}|}$ amplifies parameter errors exponentially in the mode gap).
 Consequently, the operationally relevant comparison is not ``coherence maximization vs.\ exact inversion'' but ``coherence maximization vs.\ inversion at realistic calibration accuracy,'' and the dimension at which the two cross depends on~$\delta$; this trade-off surface is mapped quantitatively in the sensitivity analysis of Sec.~\ref{sec:sensitivity}.
-
-An earlier version of this manuscript reported a closed-form crossover dimension obtained from a fixed-point equation; that equation admits no positive solution for our noise parameters and has been retracted.
-We thank the numerical audit accompanying this revision for identifying the error.
 
 
 %% ============================================================
@@ -260,10 +269,8 @@ For pure-state targets, $\rhoe$ from Eq.~\eqref{eq:cohmax} exactly recovers $\rh
 In practice, finite dephasing rates produce exponentially suppressed but nonzero coherences, so this condition is satisfied for any finite $\gamma$; however, numerical underflow may violate it for very large $\gamma$ or $|\Delta_{ij}|$.
 
 An important subtlety is the mode inclusion condition: Theorem~1 requires $\CC(\rhoe) \subseteq \CC(\rhon)$.
-Since coherence maximization sets $(\rhoe)_{ij} = \sqrt{p_i p_j}\,e^{i\phi_{ij}}$, the estimate $\rhoe$ has nonzero coherences wherever $p_i, p_j > 0$.
-For full-rank noisy states (guaranteed by depolarizing or combined noise), $\CC(\rhon)$ includes all modes, so mode inclusion is automatically satisfied.
-For pure dephasing with $(\rhon)_{ij} = 0$ for some $(i,j)$, our convention $\phi_{ij} = 0$ ensures $(\rhoe)_{ij} = \sqrt{p_i p_j} \neq 0$, which may violate mode inclusion.
-In such cases, the ICEC protocol handles the violation by restricting amplification to the shared modes $\CC(\rhoe) \cap \CC(\rhon)$, resulting in partial recovery.
+Since coherence maximization sets $(\rhoe)_{ij} = \sqrt{p_i p_j}\,e^{i\phi_{ij}}$, the estimate $\rhoe$ has nonzero coherences wherever $p_i, p_j > 0$---in general a \emph{larger} mode set than $\rhon$ possesses, since the presence of a mode is a property of the off-diagonal elements of $\rhon$ and is not implied by full rank (depolarizing noise, for instance, leaves every vanished off-diagonal element at zero while making the state full rank).
+Whenever $(\rhon)_{ij}$ lies below the mode threshold of Sec.~\ref{sec:computational}, the estimator has introduced a mode for which Theorem~1 gives no reachability guarantee; the recovery interface [Eq.~\eqref{eq:recovery_structure}] removes such coherences before projection, so that the effective target satisfies mode inclusion by construction and the loss is accounted for by $\Delta_\mathrm{mode}$.
 
 We note that Eq.~\eqref{eq:cohmax} can be viewed as a special case of constrained quantum state estimation~\cite{Hradil1997}, where the constraint set is the intersection of the PSD cone with the observed diagonal.
 Unlike general tomographic methods~\cite{Gross2010,Haah2017}, which reconstruct the state from informationally complete measurements, our estimator takes the noisy density matrix itself as input and exploits the specific structure of decoherence to reconstruct the off-diagonal elements.
@@ -557,8 +564,6 @@ Within a fixed condition, the qualitative ordering is robust: strategies that ad
 
 Given the methodological caveats above, we restrict physical interpretation to the within-condition contrast, which survives both caveats because they apply equally to all strategies within a condition: under amplitude damping at $\gamma_\mathrm{AD} = 0.3$, channel inversion (which corrects the dominant error) gains rapidly with copies while coherence maximization (which cannot) gains slowly ($\alpha = 2.16$ vs.\ $0.22$); at $\gamma_\mathrm{AD} = 0.7$ the same ordering holds ($1.19$ vs.\ $0.04$).
 Exponents above unity should not be over-interpreted as beating tomographic limits---they reflect the interaction of the perturbation model with the inversion step, not a measurement-theoretic speedup.
-(An earlier version of this manuscript included a figure interpreting these exponents against reference scaling laws; it has been withdrawn because the $n = 1$ point of the underlying sweep bypasses the fluctuation model entirely, making the fitted curves non-comparable across $n$.)
-
 
 \subsection{Dimension dependence}
 \label{sec:dimension}
@@ -582,7 +587,7 @@ Blind CQEC for a qutrit ($d = 3$) under dephasing, illustrating the intermediate
 The algorithm-specific benchmarks of Secs.~\ref{sec:algorithms_results}--\ref{sec:dimension} used fixed target states determined by each quantum algorithm.
 To assess strategy performance independent of target-state structure, we performed a systematic dimension sweep using Haar-random pure states (generated via \path{benchmark_blind_dimension_sweep.py}).
 For each dimension $d \in \{2, 4, 8, 16, 32, 64\}$, 20~Haar-random pure states were drawn, subjected to combined noise ($\gamma = 1.0$, $p = 0.15$, $\gamma_\mathrm{AD} = 0.1$), and corrected using each estimation strategy.
-(Dimensions $d \geq 128$ are excluded because the exact dephasing inversion factor $e^{\gamma(d-1)}$ exceeds double-precision range; results previously reported at those dimensions were numerically invalid and have been withdrawn.)
+(Dimensions $d \geq 128$ are excluded because the exact dephasing inversion factor $e^{\gamma(d-1)}$ exceeds double-precision range.)
 
 \begin{figure}[!tb]
 \centering
@@ -702,7 +707,7 @@ $w^*$ is selected by maximizing fidelity against the \emph{true} target (an orac
 
 Figure~\ref{fig:hybrid} shows $\Frec$ versus~$w$ at each dimension under the unified noise implementation.
 The result is unambiguous: $F(w)$ is monotonically increasing in $w$ at every dimension tested, so $w^* = 1$ (pure channel inversion) throughout, with no interior optimum.
-This corrects an earlier version of this analysis, in which an apparent interior optimum at intermediate dimensions was an artifact of an inconsistency between the forward noise and the inversion conventions; under the unified implementation, exact channel inversion reproduces the oracle (Sec.~\ref{sec:haar_sweep}) and no admixture of coherence maximization can improve on it.
+This is the expected consequence of Sec.~\ref{sec:haar_sweep}: exact channel inversion reproduces the oracle, so no admixture of coherence maximization can improve on it.
 The practical motivation for the hybrid family therefore rests entirely on \emph{parameter uncertainty}: when the calibration error is large enough that channel inversion underperforms coherence maximization (Sec.~\ref{sec:sensitivity}), an intermediate $w$ interpolates between the miscalibrated inversion and the noise-model-free fallback.
 Two caveats apply: the $w^*$ reported here is selected by maximizing fidelity against the \emph{true} target (an oracle analysis characterizing the achievable envelope, not an operational tuning rule), and a blind selection rule for $w$ from calibration data alone remains future work.
 
@@ -760,6 +765,12 @@ Within this scope, blind CoM occupies the niche of noise-model-free state-level 
 The relevant information-theoretic reference point is the sample complexity of quantum state tomography: reconstructing an unknown $d$-dimensional state to trace-norm accuracy $\epsilon$ requires $\Theta(d^2/\epsilon^2)$ copies in general~\cite{Haah2017}.
 This bound frames the resource accounting of Sec.~\ref{sec:qem_compare}: because our simulations grant the estimators oracle access to the exact noisy density matrix, the copy counts reported in Table~\ref{tab:min_copies} quantify only the \emph{state-preparation fluctuation-averaging} requirement within our perturbation model, not the measurement cost of acquiring $\rhon$ in the first place.
 A full operational analysis---allocating explicit POVMs and shot budgets to each estimator and comparing the resulting end-to-end sample complexity against the tomographic baseline---is a necessary next step that the density-matrix-level framework of this paper cannot provide.
+
+There is, moreover, a fundamental reason why oracle density-matrix access cannot be replaced by a single physical copy for any \emph{deterministic, target-independent} recovery.
+Let $\sigma_\pm = (I \pm X)/2$ and let dephasing produce $\rho_\pm = (I \pm \eta X)/2$ with $0 < \eta < 1$; both noisy states retain nonzero coherence, so mode inclusion holds.
+Any fixed apparatus acting on one noisy copy together with a target-independent catalyst induces a CPTP map $R$, and trace-distance contractivity gives $D(R(\rho_+), R(\rho_-)) \leq D(\rho_+, \rho_-) = \eta$, whereas $D(\sigma_+, \sigma_-) = 1$; hence at least one of the two recovery errors is at least $(1 - \eta)/2$.
+Universal single-copy recovery to arbitrary accuracy is therefore impossible in this setting, independently of the estimator.
+What the estimators of this paper exploit is precisely the additional information that oracle access supplies---equivalent to many copies and a measurement scheme---and all resource claims must be read with that cost included.
 We therefore refrain from claims of saturating or beating tomographic rates; Fig.~\ref{fig:sample_complexity} shows the empirical infidelity--copy curves of the two effective strategies at $d = 8$ against the $O(n^{-1})$ and $O(n^{-1/2})$ reference slopes, with the reference lines drawn as visual guides (their prefactors are illustrative, not derived).
 
 \begin{figure}[!tb]
@@ -878,7 +889,7 @@ In contrast, at low $d$ with near-pure targets, the bound is tight and phase-pre
 The widening gap between coherence maximization and the recovery ceiling as $d$ grows thus reflects the transition from the information-rich to the information-poor regime of the population-based estimator; whether this translates into a preference for channel inversion in practice depends on the available calibration accuracy (Sec.~\ref{sec:sensitivity}).
 
 
-\subsection{Comparison with standard and purification QEC}
+\subsection{Comparison with standard QEC and purification-based suppression}
 \label{sec:pqec}
 
 It is important to position blind CQEC relative to standard stabilizer-based QEC~\cite{Shor1995,Gottesman1997}.
@@ -887,15 +898,15 @@ This encoding-first paradigm is fundamentally different from CQEC, which operate
 The two approaches are therefore not directly comparable: standard QEC requires foresight (pre-encoding), while blind CQEC is a post-hoc recovery method applicable when encoding was not performed or was insufficient.
 Blind CQEC does not replace standard QEC but rather addresses a complementary scenario---recovering states from noisy quantum computations where pre-encoding was absent or where the noise exceeded the code's correction capacity.
 
-Purification QEC (PQEC)~\cite{Raghoonanan2026} (arXiv:2603.11568) also recovers states without target knowledge, using recursive swap tests.
+Purification quantum error suppression (PQES)~\cite{Raghoonanan2026} also improves an unknown state without target knowledge, using SWAP-test purification of multiple noisy copies with the full outcome record retained (no postselection).
 The key structural differences are:
 \begin{itemize}
-\item PQEC uses recursive purification requiring multiple identical noisy copies, with the copy count growing with the desired precision;
+\item PQES uses recursive purification requiring multiple identical noisy copies, with the copy count growing with the desired precision;
 blind CQEC requires as few as 5--10 copies at $d \leq 16$.
-\item PQEC operates without any noise-model information;
+\item PQES operates without any noise-model information;
 blind CQEC performs best when the noise model is known (channel inversion), though coherence maximization provides a noise-model-free alternative at low $d$.
 \end{itemize}
-The two approaches address complementary regimes: PQEC is suited for settings where no noise information is available and copies are abundant; blind CQEC is suited for the copy-constrained, noise-characterized regime.
+The two approaches address complementary regimes: PQES is suited for settings where no noise information is available and copies are abundant; blind CQEC is suited for the copy-constrained, noise-characterized regime.
 
 
 \subsection{Limitations}
@@ -919,7 +930,7 @@ In realistic multi-qubit settings, noise acts locally, and estimation strategies
 \item \emph{Experimental validation.}
 All results are numerical; circuit-level implementation with independently calibrated noise and hardware validation remain open (the exercise of Sec.~\ref{sec:circuit_sanity} uses oracle-calibrated parameters and is not a substitute).
 \item \emph{Dependence on companion preprints.}
-The unified CQEC and ICEC framework is given in our companion preprint~\cite{Wakaura2026unified} (arXiv:2603.25774), the catalyst-preparation methods in~\cite{Wakaura2026catalyst} (Research Square, doi:10.21203/rs.3.rs-9366084), and the PQEC comparison in~\cite{Raghoonanan2026} (arXiv:2603.11568).
+The unified CQEC and ICEC framework is given in our companion preprint~\cite{Wakaura2026unified} (arXiv:2603.25774), the catalyst-preparation methods in~\cite{Wakaura2026catalyst} (Research Square, doi:10.21203/rs.3.rs-9366084), and the PQES comparison in~\cite{Raghoonanan2026} (arXiv:2603.11568).
 The bounds Eqs.~\eqref{eq:fidelity_penalty}--\eqref{eq:explicit_bound} and the estimation strategies are self-contained.
 \end{enumerate}
 
@@ -931,11 +942,10 @@ The bounds Eqs.~\eqref{eq:fidelity_penalty}--\eqref{eq:explicit_bound} and the e
 All simulations were performed as density-matrix-level numerical calculations using custom Python code (NumPy~2.0.2, SciPy~1.13.1) on an Apple M4 Max workstation.
 No quantum hardware was used; apart from the \texttt{qiskit-aer} exercise of Sec.~\ref{sec:circuit_sanity}, all operations act directly on $d \times d$ density matrices at cost $O(d^3)$ per recovery (Sec.~\ref{sec:implementation}); the full catalytic joint-system simulation, not performed here, would cost $O(d^6)$.
 
-\emph{Unified noise module and numerical audit.}
-All noise channels (forward and inverse) are implemented once, in \texttt{blind\char`\_cqec/noise.py} and \texttt{blind\char`\_cqec/estimators.py}, and every benchmark script imports or reproduces these implementations; unit tests verify element-wise agreement between the scripts and the package (maximal deviation $\sim 10^{-16}$) and round-trip exactness of the inversion ($F > 0.999$ for $\EE^{-1}(\EE(\rho))$ at all $d \leq 64$).
+\emph{Unified noise module.}
+All noise channels (forward and inverse) are implemented once, in \texttt{blind\char`\_cqec/noise.py} and \texttt{blind\char`\_cqec/estimators.py}, and every benchmark script imports these implementations; unit tests verify element-wise agreement between the scripts and the package (maximal deviation $\sim 10^{-16}$) and round-trip exactness of the inversion ($F > 0.999$ for $\EE^{-1}(\EE(\rho))$ at all $d \leq 64$).
 The mode-inclusion threshold is fixed at $10^{-10}$ (matching the mode checker of the core library): coherences of $\rhon$ below this magnitude are treated as annihilated and are zeroed in the recovery target [Eq.~\eqref{eq:recovery_structure}]; this convention determines the $d = 64$ ceilings reported in Secs.~\ref{sec:algorithms_results} and~\ref{sec:haar_sweep}.
-This revision followed an adversarial numerical audit that identified, in an earlier version, an inconsistency between the forward dephasing convention of one benchmark script and the gap-dependent inversion (which invalidated the previously reported dimension-crossover, sensitivity, and hybrid results), a numerically overflowing regime at $d \geq 128$, and a fixed-point crossover equation with no positive solution.
-All affected tables, figures, and claims have been regenerated from the unified module or withdrawn, as noted in the text.
+Every figure and table is generated by one script and one results file, listed in \texttt{REPRODUCE.md} of the repository, with the raw numerical data shipped alongside.
 
 All results are deterministic given the recorded seeds.
 The target states are fixed by the choice of quantum algorithm (not randomly sampled) in the algorithm benchmarks, and Haar-random ensembles (20 states per dimension) are used for the dimension sweep, sensitivity, mixed-state, and hybrid benchmarks, with means and standard deviations reported.

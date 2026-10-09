@@ -27,6 +27,7 @@ from typing import Tuple, Dict, List
 import time
 import sys
 import os
+import json
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -51,8 +52,11 @@ plt.rcParams.update({
     'savefig.bbox': 'tight',
 })
 
-OUT_DIR = '/Users/deeptell01/Documents/alterego/personal/cqec'
+OUT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, OUT_DIR)
+sys.path.insert(0, os.path.join(OUT_DIR, 'blind_cqec_pkg'))
+RESULTS_DIR = os.path.join(OUT_DIR, 'blind_cqec_pkg', 'results')
+from blind_cqec.recovery import icec_recover as pkg_icec_recover
 
 # Try importing from existing codebase; fall back to inline implementations
 try:
@@ -184,71 +188,12 @@ def apply_combined_noise(rho: np.ndarray, dephasing_gamma: float = 1.0,
 # ICEC recovery (fallback-based)
 # ============================================================
 
-def _icec_recover_fallback(rho_noisy, rho_target, energies, n_cycles):
-    """Fallback ICEC: amplify residual coherence to target values."""
-    d = rho_noisy.shape[0]
-    surviving_mask = (np.abs(rho_noisy) > 1e-15)
-    np.fill_diagonal(surviving_mask, False)
-
-    if not np.any(surviving_mask):
-        return rho_noisy, {'success': False, 'fidelity': state_fidelity(rho_noisy, rho_target)}
-
-    surviving_deltas = set()
-    for i in range(d):
-        for j in range(d):
-            if surviving_mask[i, j]:
-                surviving_deltas.add(energies[i] - energies[j])
-
-    if not surviving_deltas:
-        return rho_noisy, {'success': False, 'fidelity': state_fidelity(rho_noisy, rho_target)}
-
-    surviving_deltas_arr = np.array(list(surviving_deltas))
-    surviving_deltas_arr = surviving_deltas_arr[np.abs(surviving_deltas_arr) > 1e-10]
-
-    can_amplify = surviving_mask.copy()
-    if len(surviving_deltas_arr) > 0:
-        delta_matrix = energies[:, None] - energies[None, :]
-        for sd in surviving_deltas_arr:
-            ratios = delta_matrix / sd
-            integer_mask = np.abs(ratios - np.round(ratios)) < 1e-8
-            can_amplify |= integer_mask
-        np.fill_diagonal(can_amplify, False)
-
-    rho_recovered = rho_noisy.copy()
-    for cycle in range(n_cycles):
-        rho_recovered = np.where(can_amplify, rho_target, rho_recovered)
-        np.fill_diagonal(rho_recovered, np.diag(rho_target))
-        rho_recovered = ensure_valid_dm(rho_recovered)
-
-    fidelity = state_fidelity(rho_recovered, rho_target)
-    return rho_recovered, {'success': True, 'fidelity': fidelity}
-
-
 def icec_recover(rho_noisy: np.ndarray, rho_target: np.ndarray,
                  energies: np.ndarray = None,
                  n_cycles: int = 1) -> Tuple[np.ndarray, Dict]:
-    """Apply ICEC protocol to recover a noisy state."""
-    d = rho_noisy.shape[0]
-    if energies is None:
-        energies = np.arange(d, dtype=float)
-
-    if d > 64:
-        return _icec_recover_fallback(rho_noisy, rho_target, energies, n_cycles)
-
-    if HAS_CORE:
-        try:
-            n_cop = min(50, max(10, 200 // d))
-            protocol = ICECProtocol(energies, rho_target)
-            protocol.initialize(n_copies=n_cop)
-            rho_recovered = rho_noisy.copy()
-            for cycle in range(n_cycles):
-                rho_recovered, _ = protocol.correct(rho_recovered, n_copies=n_cop)
-            fidelity = state_fidelity(rho_recovered, rho_target)
-            return rho_recovered, {'success': True, 'fidelity': fidelity}
-        except Exception:
-            pass
-
-    return _icec_recover_fallback(rho_noisy, rho_target, energies, n_cycles)
+    """Unified recovery map: mode-restricted PSD projection (blind_cqec.recovery)."""
+    recovered = pkg_icec_recover(rho_noisy, rho_target, mode_tol=1e-10)
+    return recovered, {'success': True, 'fidelity': state_fidelity(recovered, rho_target)}
 
 
 # ============================================================
@@ -326,7 +271,7 @@ def estimate_iterative(noisy, energies, **kwargs):
     n_iter = 2 if d <= 32 else 1
     for it in range(n_iter):
         try:
-            recovered, _ = _icec_recover_fallback(noisy, current_est, energies, 1)
+            recovered, _ = icec_recover(noisy, current_est, energies, 1)
             new_est = 0.5 * recovered + 0.5 * current_est
             current_est = ensure_valid_dm(new_est)
         except Exception:
@@ -444,8 +389,10 @@ def run_section1():
     }
 
     all_strat_names = ['No correction'] + list(STRATEGIES.keys()) + ['Oracle']
+    tables = {}
 
     for noise_name, noise_info in noise_channels.items():
+        tables[noise_name] = {}
         print(f"\n{'─' * 85}")
         print(f"  Noise: {noise_name}")
         print(f"{'─' * 85}")
@@ -461,6 +408,7 @@ def run_section1():
             target = generate_algorithm_state(alg_name)
             d = ALGORITHMS[alg_name]['d']
             res = benchmark_single(target, d, noise_info['fn'], noise_info['kwargs'])
+            tables[noise_name][alg_name] = res
 
             row = f"  {alg_name:<18s}"
             for sn in all_strat_names:
@@ -468,6 +416,7 @@ def run_section1():
             print(row)
 
     print()
+    return tables
 
 
 # ============================================================
@@ -750,13 +699,22 @@ if __name__ == "__main__":
     print("=" * 85)
 
     # Section 1
-    run_section1()
+    per_noise_tables = run_section1()
 
     # Section 2
-    run_section2()
+    v_values, mixed_results = run_section2()
 
     # Section 3
-    run_section3()
+    hybrid_results = run_section3()
+
+    # Raw data dump (data-availability statement)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    with open(os.path.join(RESULTS_DIR, 'benchmark_blind_nature_supp.json'), 'w') as fh:
+        json.dump({
+            'tab_dephasing_only__tab_depol_only__tab_ampdamp_only': per_noise_tables,
+            'fig_mixed_state_sweep': {'v_values': v_values, 'results': mixed_results},
+            'fig_hybrid_strategy': hybrid_results,
+        }, fh, indent=1, default=lambda o: o.tolist())
 
     t_total = time.time() - t_start
     print(f"\n{'=' * 85}")

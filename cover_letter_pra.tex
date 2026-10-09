@@ -1,0 +1,89 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{xcolor}
+\sloppy
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\textbf{Cover letter to the Editors of \emph{Physical Review A}}
+
+\vspace{0.4cm}
+
+Hikaru Wakaura, Taiki Tanimae \\
+QIRI (Quantum Integrated Research Institute Inc.)\\
+1--16--3, Akasaka, Minato-ku, Tokyo 107--0061, Japan\\
+\href{mailto:h.wakaura@qiri.co.jp}{h.wakaura@qiri.co.jp} \quad ORCID: 0009-0001-2341-7710
+
+\vspace{0.3cm}
+October 9, 2026
+
+\vspace{0.4cm}
+
+Dear Editors,
+
+\medskip
+
+We are pleased to submit our manuscript, \textbf{``Catalytic quantum error correction: efficient catalyst preparation and a completely positive covariant recovery channel''}, for consideration as a Regular Article in \emph{Physical Review A} (Quantum information).
+
+\medskip
+
+\textbf{Summary of the contribution.}
+Shiraishi and Takagi (\emph{Phys.\ Rev.\ Lett.}\ \textbf{132}, 180202, 2024) proved that catalytic covariant operations can amplify quantum coherence at an unbounded asymptotic rate.
+Turning that theorem into an operational state-recovery scheme has been blocked by two obstacles: the constructive proof requires $n^{*} \sim d^{4} e^{2\gamma}$ noisy copies to prepare the catalyst (about $7.3 \times 10^{10}$ for six qubits at dephasing $\gamma = 2$), and no concrete covariant recovery channel had been exhibited.
+This manuscript addresses both.
+(i)~A three-stage pipeline---CPMG dynamical decoupling, Clifford twirling, recursive swap-test purification---prepares catalysts at the matched $F_\mathrm{cat} \geq 0.99$ endpoint from 32~copies, a $10^{4}$--$10^{9}$-fold reduction depending on dimension, with postselection costs quantified ($P_\mathrm{succ} \approx 0.7$).
+(ii)~An explicitly completely positive, exactly covariant joint-channel implementation of the recovery map (system--catalyst--ancilla; catalyst obtained by partial trace, never copied) achieves genuine fidelity recovery under dephasing at $d = 4$ ($0.54 \to 0.77$), passes a target-swap control experiment, and delimits the method's current reach: shallow covariant circuits do not yet help under depolarizing noise or at $d = 8$, and they consume rather than preserve the catalyst.
+An effective surrogate model of the asymptotic limit, benchmarked across 200~noise configurations ($d = 4$--$64$), is clearly separated from the channel-level results and collected in an appendix.
+
+\medskip
+
+\textbf{Why \emph{Physical Review A}.}
+\begin{itemize}
+\item \emph{Protocol with explicit success conditions.} The CQEC protocol is formalized through the mode-inclusion criterion $\mathcal{C}(\rho_{0}) \subseteq \mathcal{C}(\rho_\mathrm{noisy})$, with finite-copy fidelity bounds and a clear statement of the operational assumptions (known target state, multiple copies), including its relation to stabilizer QEC, covariant codes, and the concurrent Purification QEC of Raghoonanan \& Byrnes (arXiv:2603.11568).
+\item \emph{Verified numerics.} Every quantitative property of the joint channel is locked in by unit tests: $\|[U, H_\mathrm{total}]\| = 0$ exactly, linearity to machine precision, Choi positivity, trace preservation, and catalyst-by-partial-trace.
+\item \emph{Scoped claims.} Model-level and channel-level results are explicitly distinguished throughout; sensitivity of the pipeline's dimension independence to the twirl model is derived rather than hidden.
+\item \emph{Open science.} The reference implementation is released as the \texttt{cqec} Python package v0.2.0 (MIT license) with a 52-test \texttt{pytest} suite and a one-command reproduction script: \href{https://github.com/deeptell-inc/cqec}{\texttt{github.com/deeptell-inc/cqec}}.
+\end{itemize}
+
+\medskip
+
+\textbf{Suggested referees} (institutional emails from public faculty pages; please verify before contact):
+\begin{itemize}
+\item \textbf{Naoto Shiraishi} (The University of Tokyo; \href{mailto:shiraishi@phys.c.u-tokyo.ac.jp}{\texttt{shiraishi@phys.c.u-tokyo.ac.jp}}) --- co-author of the foundational PRL on catalytic coherence transformations.
+\item \textbf{Ryuji Takagi} (Nanyang Technological University; \href{mailto:ryuji.takagi@ntu.edu.sg}{\texttt{ryuji.takagi@ntu.edu.sg}}) --- co-author of the same PRL; resource-theoretic content.
+\item \textbf{Tim Byrnes} (NYU Shanghai; \href{mailto:tim.byrnes@nyu.edu}{\texttt{tim.byrnes@nyu.edu}}) --- co-author of the concurrent Purification QEC framework compared in our taxonomy table.
+\item \textbf{Iman Marvian} (Duke University; \href{mailto:iman.marvian@duke.edu}{\texttt{iman.marvian@duke.edu}}) --- covariant operations and resource theory of asymmetry.
+\item \textbf{Andrew M.~Childs} (University of Maryland; \href{mailto:amchilds@umd.edu}{\texttt{amchilds@umd.edu}}) --- recursive swap-test purification adapted in our pipeline.
+\end{itemize}
+
+\medskip
+
+\textbf{Statements.}
+This work is not under consideration elsewhere.
+A complementary manuscript, ``Blind Catalytic Quantum Error Correction'' (independent content, no shared figures or theorems), is in review at a different journal.
+All authors have approved the submission; we declare no competing interests.
+The manuscript is archived at \href{https://doi.org/10.48550/arXiv.2603.25774}{arXiv:2603.25774}.
+
+\medskip
+
+We thank you for your consideration and look forward to the referees' feedback.
+
+\medskip
+
+Sincerely,
+
+\vspace{0.4cm}
+Hikaru Wakaura\\
+Taiki Tanimae\\
+QIRI Inc., Tokyo
+
+\end{document}

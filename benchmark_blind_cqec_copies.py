@@ -42,13 +42,16 @@ plt.rcParams.update({
     'savefig.bbox': 'tight',
 })
 
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/personal/cqec')
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
+sys.path.insert(0, os.path.join(_HERE, 'blind_cqec_pkg'))
 from core import (
     EnergySystem, trace_distance,
     coherence_l1, partial_dephasing, amplitude_damping,
     depolarizing_channel, maximally_coherent_state,
 )
 from icec import ICECProtocol
+from blind_cqec.recovery import icec_recover as pkg_icec_recover
 
 # Import estimation strategies from the previous benchmark
 from benchmark_blind_cqec import (
@@ -124,9 +127,7 @@ def sweep_copies(
                     n_samples=min(20, n_c),
                 )
 
-            protocol = ICECProtocol(energies, est_target)
-            protocol.initialize(n_c)
-            recovered, _ = protocol.correct(noisy, n_c)
+            recovered = pkg_icec_recover(noisy, est_target)
 
             f = state_fidelity(recovered, target)
             d = trace_distance(recovered, target)
@@ -321,7 +322,7 @@ def plot_scaling_exponents(scaling_data: dict, filename: str):
 
 if __name__ == "__main__":
     np.random.seed(42)
-    out_dir = '/Users/deeptell01/Documents/alterego/personal/cqec'
+    out_dir = _HERE
 
     print("=" * 70)
     print(" Copy-Economized Blind CQEC Benchmark")

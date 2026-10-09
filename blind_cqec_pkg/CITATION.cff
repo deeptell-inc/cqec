@@ -17,12 +17,10 @@ authors:
     affiliation: "QIRI (Quantum Integrated Research Institute Inc.)"
 preferred-citation:
   type: article
-  title: "Blind Catalytic Quantum Error Correction: Target-State Estimation and Fidelity Recovery Without A Priori Knowledge"
+  title: "Blind catalytic quantum error correction: target-state estimation and fidelity bounds"
   authors:
     - family-names: Wakaura
       given-names: Hikaru
-    - family-names: Tanimae
-      given-names: Taiki
   year: 2026
   doi: "10.48550/arXiv.2604.11857"
   url: "https://arxiv.org/abs/2604.11857"

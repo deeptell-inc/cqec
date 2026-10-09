@@ -22,12 +22,15 @@ from typing import Tuple, Dict
 import time
 import sys
 import os
+import json
 
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, '/Users/deeptell01/Documents/alterego/personal/cqec')
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
+RESULTS_DIR = os.path.join(_HERE, 'blind_cqec_pkg', 'results')
 
 # ---------------------------------------------------------------------------
 # Try importing from existing benchmarks; fall back to inline implementations
@@ -461,33 +464,25 @@ def run_scaling_physics(d=8, n_copies_list=None,
 
     for n_cop in n_copies_list:
         for name, estimator in strategies.items():
-            if n_cop == 1:
-                # Single copy: use estimator directly
-                if name == 'channel_inversion':
-                    est = estimator(noisy, energies,
-                                    dephasing_gamma=gamma_true,
-                                    depol_p=p_true,
-                                    amp_damp_gamma=gamma_AD_true)
-                else:
-                    est = estimator(noisy, energies)
+            # Average n_cop fluctuating noisy copies then estimate.  The same
+            # perturbation path is used for every n, including n = 1, so the
+            # n = 1 point sits on the same fluctuation model as the rest.
+            avg = np.zeros_like(noisy, dtype=complex)
+            for _ in range(n_cop):
+                noise_scale = 1.0 / np.sqrt(d)
+                fluct = (np.random.randn(d, d) +
+                         1j * np.random.randn(d, d)) * noise_scale / np.sqrt(n_cop)
+                fluct = 0.5 * (fluct + fluct.conj().T)
+                sample = ensure_valid_dm(noisy + fluct)
+                avg += sample
+            avg /= n_cop
+            if name == 'channel_inversion':
+                est = estimator(avg, energies,
+                                dephasing_gamma=gamma_true,
+                                depol_p=p_true,
+                                amp_damp_gamma=gamma_AD_true)
             else:
-                # Multi-copy: average n_cop noisy copies then estimate
-                avg = np.zeros_like(noisy, dtype=complex)
-                for _ in range(n_cop):
-                    noise_scale = 1.0 / np.sqrt(d)
-                    fluct = (np.random.randn(d, d) +
-                             1j * np.random.randn(d, d)) * noise_scale / np.sqrt(n_cop)
-                    fluct = 0.5 * (fluct + fluct.conj().T)
-                    sample = ensure_valid_dm(noisy + fluct)
-                    avg += sample
-                avg /= n_cop
-                if name == 'channel_inversion':
-                    est = estimator(avg, energies,
-                                    dephasing_gamma=gamma_true,
-                                    depol_p=p_true,
-                                    amp_damp_gamma=gamma_AD_true)
-                else:
-                    est = estimator(avg, energies)
+                est = estimator(avg, energies)
 
             recovered, _ = icec_recover(noisy, est, energies, n_cycles=1)
             f = state_fidelity(recovered, target)
@@ -513,6 +508,7 @@ def plot_scaling_physics(n_copies_list, results, out_dir):
     def power_law(x, a, b):
         return a * np.power(x, b)
 
+    fits = {}
     for name in results:
         infidelity = results[name]
         # Filter out zero or negative values for log-log
@@ -532,6 +528,7 @@ def plot_scaling_physics(n_copies_list, results, out_dir):
             inf_valid = infidelity[valid]
             popt, _ = curve_fit(power_law, n_valid, inf_valid,
                                 p0=[inf_valid[0], -0.5], maxfev=5000)
+            fits[name] = {'prefactor': popt[0], 'exponent': popt[1]}
             n_fit = np.logspace(np.log10(n_arr[0]), np.log10(n_arr[-1]), 100)
             ax.plot(n_fit, power_law(n_fit, *popt), '--',
                     color=colors[name], linewidth=1.2, alpha=0.8)
@@ -572,7 +569,7 @@ def plot_scaling_physics(n_copies_list, results, out_dir):
     plt.savefig(path)
     plt.close()
     print(f"  Saved: {path}")
-    return path
+    return fits
 
 
 # ============================================================
@@ -618,7 +615,7 @@ def print_curves_table(deltas_fine, results, d_label):
 
 if __name__ == "__main__":
     np.random.seed(42)
-    out_dir = '/Users/deeptell01/Documents/alterego/personal/cqec'
+    out_dir = _HERE
 
     print("=" * 70)
     print(" Blind CQEC: Noise-Parameter Sensitivity Benchmark")
@@ -686,7 +683,24 @@ if __name__ == "__main__":
         print(f"  {n:>10d}  {scaling_results['coherence_max'][i]:>12.6f}"
               f"  {scaling_results['channel_inversion'][i]:>12.6f}")
 
-    plot_scaling_physics(n_copies_list, scaling_results, out_dir)
+    scaling_fits = plot_scaling_physics(n_copies_list, scaling_results, out_dir)
+    for name, fit in scaling_fits.items():
+        print(f"  Power-law fit {name:>18s}: 1-F ~ n^{fit['exponent']:.3f}")
+
+    # --------------------------------------------------------
+    # Raw data dump (data-availability statement)
+    # --------------------------------------------------------
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    with open(os.path.join(RESULTS_DIR, 'benchmark_blind_sensitivity.json'), 'w') as fh:
+        json.dump({
+            'fig_sensitivity_heatmap': {'dims': dims, 'deltas': deltas,
+                                        'n_states': n_states, 'F_rec': F_matrix},
+            'fig_sensitivity_curves': {'deltas': deltas_fine,
+                                       'd8': results_d8, 'd64': results_d64},
+            'fig_scaling_physics': {'n_copies': n_copies_list,
+                                    'infidelity': scaling_results,
+                                    'power_law_fits': scaling_fits},
+        }, fh, indent=1, default=lambda o: o.tolist())
 
     # --------------------------------------------------------
     # Summary

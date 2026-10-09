@@ -1,0 +1,15 @@
+TITLE:
+Blind catalytic quantum error correction: target-state estimation and fidelity bounds
+
+AUTHORS:
+Hikaru Wakaura
+
+ABSTRACT (1806 chars incl. spaces, ASCII only; arXiv limit 1920; metadata abstract only — manuscript abstract unchanged):
+Catalytic quantum error correction (CQEC) amplifies residual coherence with a reusable catalyst, giving threshold-free recovery whenever the target coherent modes survive in the noisy state; its original protocol, however, requires complete knowledge of the ideal target, which fails for variational and iterative algorithms whose output is unknown to the correction module. Here we show that this requirement can be removed by estimating the target from the noisy output alone, in a two-stage protocol we call blind CQEC. At the density-matrix level studied here the recovery map is the mode-inclusion-restricted projection of the estimate, so recovery fidelity obeys F_rec >= 1 - 2||rho_est - rho_target||_1 - 2 Delta_mode: the design of blind CQEC reduces to a classical estimation problem under a recovery ceiling set by mode survival. We benchmark five estimation strategies across three noise channels, four quantum algorithms (d = 4-64), Haar-random states, and mixed targets, assuming oracle access to the noisy density matrix. With exactly calibrated noise, channel inversion coincides with the oracle and both are capped by the mode-survival ceiling (F_rec = 0.77 at d = 64 with the 10^-10 mode threshold); noise-model-free coherence maximization matches the ceiling to within 1.5% at d <= 16; the choice between them is set by calibration accuracy, with the dephasing rate exponentially dominant. Unlike error-mitigation methods, blind CQEC returns the state itself rather than corrected expectation values. A noisy-VQE demonstration for H2 yields a 3.4x energy-error reduction. These results chart the estimator design space for blind, threshold-free recovery and identify the two open problems, an operational measurement model and a circuit-level catalytic map, that remain before deployment.
+
+COMMENTS:
+39 pages, 17 figures, 9 tables. v2: substantially revised after peer review. The recovery step is now stated explicitly as a mode-inclusion-restricted projection interface (the catalytic transformation itself is not simulated); the closed-form crossover formula and d>=128 data of v1 are removed; the Lipschitz lemma is replaced by a rigorous one-sided projection bound; all numerics regenerated from a unified forward/inverse-consistent noise model and a single mode-restricted recovery map, with the dependence of every high-dimensional ceiling on the mode threshold tabulated; negative results added. Code: https://github.com/deeptell-inc/blind_cqec_pkg (v0.2.0)
+
+CATEGORY: quant-ph
+REPLACES: arXiv:2604.11857v1
+LICENSE: arXiv.org perpetual, non-exclusive license (or CC BY 4.0 — author's choice)
